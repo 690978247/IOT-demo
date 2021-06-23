@@ -3,7 +3,7 @@
 // 协议名称： S7_TCP   Modbus_TCP  OPC_DA  OPC_UA  MC3E_Binary_Etherent  MCA1E_Binary_Etherent  Fins_TCP
 var popupData = {
   protocolName: 'S7_TCP',
-  dataType: '字符串'
+  dataType: '二进制变量'
 }
 
 // 定义一个提交的数据结构， 用来填写默认值与回显
@@ -21,6 +21,10 @@ var addressData = {
 }
 // 克隆一份数据用来做弹窗取消的回显
 var formData = JSON.parse(JSON.stringify(addressData))
+
+
+
+
 /* 方法 */
 // 打开变量弹窗
 function openPop() {
