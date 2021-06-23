@@ -16,6 +16,7 @@ var addressData = {
   len: 1, // 长度
   addressOffset: 1, // 地址偏移量
   addressType: '字节', // 地址类型
+  addressValue: '', // 最后组装出来的变量值
   showList: [1,2,5], // 弹窗显示的form块
 }
 // 克隆一份数据用来做弹窗取消的回显
