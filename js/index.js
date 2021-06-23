@@ -11,10 +11,10 @@ var addressData = {
   dataArea: '位', // 数据区域
   letters: 'M', // 寄存器字母块（M/DBX/I/Q/MB/DBB/IB/QB/MW/DBW/IW/QW/MD/DBD/ID/QD）
   lettleValue: 0, // 寄存器字母对应的值
-  DBNum: 0, // DB号
+  DBNum: 1, // DB号
   bit: 0,  //  位
   len: 1, // 长度
-  addressOffset: 0, // 地址偏移量
+  addressOffset: 1, // 地址偏移量
   addressType: '字节' // 地址类型
 }
 
@@ -47,7 +47,7 @@ function renderS7_TCPHTML(items = [], data = {}) {
     <div class="PBW-block" >
         <div class="PBW-block-item" >
           <span>数据区域</span>
-          <select>
+          <select onchange="changeData(event, 'dataArea')" >
             <option value="位" ${data.dataArea === '位' ? 'selected' : ''} >位</option>
             <option value="DB" ${data.dataArea === 'DB' ? 'selected' : ''} >DB</option>
             <option value="输入" ${data.dataArea === '输入' ? 'selected' : ''} >输入</option>
@@ -63,7 +63,7 @@ function renderS7_TCPHTML(items = [], data = {}) {
       <div class="PBW-block" >
         <div class="PBW-block-item">
           <span>${data.letters}</span>
-          <input type="text" value="${data.lettleValue}" >
+          <input type="number" min="0" value="${data.lettleValue}" onblur="blurData(event, 'lettleValue')" >
         </div>
       </div>
     `.trim()
@@ -74,7 +74,7 @@ function renderS7_TCPHTML(items = [], data = {}) {
       <div class="PBW-block" >
         <div class="PBW-block-item">
           <span>DB号</span>
-          <input type="text" value="${data.DBNum}" >
+          <input type="number" min="1" value="${data.DBNum}" onblur="blurData(event, 'DBNum')" >
         </div>
       </div>
     `.trim()
@@ -85,7 +85,7 @@ function renderS7_TCPHTML(items = [], data = {}) {
       <div class="PBW-block" >
         <div class="PBW-block-item">
           <span>地址偏移量</span>
-          <input type="text" value="${data.addressOffset}" >
+          <input type="number" min="1" value="${data.addressOffset}" onblur="blurData(event, 'addressOffset')" >
         </div>
       </div>
     `.trim()
@@ -96,7 +96,7 @@ function renderS7_TCPHTML(items = [], data = {}) {
       <div class="PBW-block" >
         <div class="PBW-block-item">
           <span>位</span>
-          <select>
+          <select onchange="changeData(event, 'bit')">
             <option value="0" ${data.bit === '0' ? 'selected' : ''} >0</option>
             <option value="1" ${data.bit === '1' ? 'selected' : ''} >1</option>
             <option value="2" ${data.bit === '2' ? 'selected' : ''} >2</option>
@@ -116,7 +116,7 @@ function renderS7_TCPHTML(items = [], data = {}) {
       <div class="PBW-block" >
         <div class="PBW-block-item">
           <span>长度</span>
-          <input type="text" value="${data.len}" >
+          <input type="number" min="1" max="255" value="${data.len}" onblur="blurData(event, 'len')" >
         </div>
       </div>
     `.trim()
@@ -127,7 +127,7 @@ function renderS7_TCPHTML(items = [], data = {}) {
       <div class="PBW-block" >
         <div class="PBW-block-item">
           <span>地址类型</span>
-          <select>
+          <select onchange="changeData(event, 'addressType')">
             <option value="字节" ${data.addressType === '字节' ? 'selected' : ''} >字节</option>
             <option value="字" ${data.addressType === '字' ? 'selected' : ''} >字</option>
             <option value="双字" ${data.addressType === '双字' ? 'selected' : ''} >双字</option>
@@ -149,5 +149,41 @@ function closePop () {
 
 // 提交弹窗
 function confirmPop () {
+  console.log(addressData)
   closePop()
+}
+
+// 选择下拉内容
+function changeData (e, prop) {
+  addressData[prop] = e.target.value
+}
+
+function blurData (e, prop) {
+  let types = ['DBNum','addressOffset']
+  if (prop === 'lettleValue') {
+    // 必填，0或正整数；
+    if (!e.target.value) {
+      e.target.value = 0
+    } else if (e.target.value < 0) {
+      e.target.value = 0
+    }
+  } else if (types.includes(prop)) {
+    // 必填，大于0的正整数
+    if (!e.target.value) {
+      e.target.value = 1
+    } else if (e.target.value < 1) {
+      e.target.value = 1
+    }
+  } else if (prop === 'len') {
+    // 必填，1-255的正整数
+    if (!e.target.value) {
+      e.target.value = 1
+    } else if (e.target.value <= 1) {
+      e.target.value = 1
+    } else if (e.target.value >= 255) {
+      e.target.value = 255
+    }
+  }
+
+  addressData[prop] = e.target.value
 }
