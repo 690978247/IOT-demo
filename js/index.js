@@ -17,3 +17,8 @@ function closePop () {
   let pop = document.getElementById('popup')
   pop.style.display = 'none'
 }
+
+// 提交弹窗
+function confirmPop () {
+  closePop()
+}

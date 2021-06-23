@@ -116,3 +116,55 @@
   font-size: 14px;
   word-break: break-all;
 }
+
+/* 底部样式 */
+.popup-footer {
+  display: flex;
+  justify-content: center;
+  padding: 10px 20px 20px;
+  box-sizing: border-box;
+}
+.popup-btn {
+  display: inline-block;
+  line-height: 1;
+  white-space: nowrap;
+  cursor: pointer;
+  background: #fff;
+  border: 1px solid #dcdfe6;
+  color: #606266;
+  text-align: center;
+  box-sizing: border-box;
+  outline: none;
+  margin: 0;
+  transition: .1s;
+  font-weight: 500;
+  padding: 9px 15px;
+  font-size: 14px;
+  border-radius: 4px;
+  user-select: none;
+}
+.popup-cancel:hover {
+  color: #409eff;
+  border-color: #c6e2ff;
+  background-color: #ecf5ff;
+}
+.popup-isplain {
+  color: #409eff ;
+  background: #ecf5ff ;
+  border-color: #b3d8ff ;
+}
+.popup-isplain:hover {
+  background: #409eff;
+  border-color: #409eff;
+  color: #fff;
+}
+.popup-confirm {
+  color: #fff;
+  background-color: #409eff;
+  border-color: #409eff;
+}
+.popup-confirm:hover {
+  background: #66b1ff;
+  border-color: #66b1ff;
+  color: #fff;
+}
