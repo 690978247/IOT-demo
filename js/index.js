@@ -17,7 +17,7 @@ var addressData = {
   addressOffset: 1, // 地址偏移量
   addressType: '字节', // 地址类型
   addressValue: '', // 最后组装出来的变量值
-  showList: [1,2,5], // 弹窗显示的form块
+  showList: [], // 弹窗显示的form块
 }
 // 克隆一份数据用来做弹窗取消的回显
 var formData = JSON.parse(JSON.stringify(addressData))
@@ -31,11 +31,13 @@ function openPop() {
   // S7_TCP 渲染弹窗
   if (popupData.protocolName === 'S7_TCP') {
     if (popupData.dataType === '二进制变量') {
-      renderS7_TCPHTML(formData.showList, formData)
-    } /* else if (popupData.dataType === '有符号8位整型') {
-      addressData.letters = 'MB'
-      renderS7_TCPHTML([1,2], addressData)
-    } */
+      formData.showList = formData.showList.length === 0 ?  [1,2,5] : formData.showList
+      renderS7_TCPHTML(formData.showList, formData, popupData.dataType)
+    } else if (popupData.dataType === '有符号8位整型') {
+      formData.letters = 'MB'
+      formData.showList = formData.showList.length === 0 ?  [1,2] : formData.showList
+      renderS7_TCPHTML(formData.showList, formData, popupData.dataType)
+    }
   }
 
 
@@ -57,7 +59,7 @@ function confirmPop () {
 
 
 
-function renderS7_TCPHTML(items = [], data = {}) {
+function renderS7_TCPHTML(items = [], data = {}, type) {
   // 1: 数据区域  2. 下拉块（M/DBX/I/Q/MB/DBB/IB/QB/MW/DBW/IW/QW/MD/DBD/ID/QD） 3.  DB号  4. 地址偏移量   5. 位   6. 长度   7.  地址类型 
  let wrap = document.getElementById('popup-body-wrap')
  let html = ``
@@ -66,7 +68,7 @@ function renderS7_TCPHTML(items = [], data = {}) {
    <div class="PBW-block" >
        <div class="PBW-block-item" >
          <span>数据区域</span>
-         <select onchange="changeData(event, 'dataArea')" >
+         <select onchange="changeData(event, 'dataArea', '${type}')" >
            <option value="位" ${data.dataArea === '位' ? 'selected' : ''} >位</option>
            <option value="DB" ${data.dataArea === 'DB' ? 'selected' : ''} >DB</option>
            <option value="输入" ${data.dataArea === '输入' ? 'selected' : ''} >输入</option>
@@ -115,7 +117,7 @@ function renderS7_TCPHTML(items = [], data = {}) {
      <div class="PBW-block" >
        <div class="PBW-block-item">
          <span>位</span>
-         <select onchange="changeData(event, 'bit')">
+         <select onchange="changeData(event, 'bit', '${type}')">
            <option value="0" ${data.bit === '0' ? 'selected' : ''} >0</option>
            <option value="1" ${data.bit === '1' ? 'selected' : ''} >1</option>
            <option value="2" ${data.bit === '2' ? 'selected' : ''} >2</option>
@@ -146,7 +148,7 @@ function renderS7_TCPHTML(items = [], data = {}) {
      <div class="PBW-block" >
        <div class="PBW-block-item">
          <span>地址类型</span>
-         <select onchange="changeData(event, 'addressType')">
+         <select onchange="changeData(event, 'addressType', '${type}')">
            <option value="字节" ${data.addressType === '字节' ? 'selected' : ''} >字节</option>
            <option value="字" ${data.addressType === '字' ? 'selected' : ''} >字</option>
            <option value="双字" ${data.addressType === '双字' ? 'selected' : ''} >双字</option>
@@ -161,7 +163,7 @@ function renderS7_TCPHTML(items = [], data = {}) {
 }
 
 // 选择下拉内容
-function changeData (e, prop) {
+function changeData (e, prop, type) {
   formData[prop] = e.target.value
   if (prop === 'dataArea') {  // 数据区域部分需要重新渲染弹窗html元素
     if (e.target.value === '位') {
@@ -177,7 +179,7 @@ function changeData (e, prop) {
       formData.letters = 'Q'
       formData.showList = [1,2,5]
     }
-    renderS7_TCPHTML(formData.showList, formData)
+    renderS7_TCPHTML(formData.showList, formData, type)
   }
 }
 
