@@ -166,12 +166,17 @@ function changeData (e, prop) {
     if (e.target.value === '位') {
       formData.letters = 'M'
       formData.showList = [1,2,5]
-      renderS7_TCPHTML(formData.showList, formData)
     } else if (e.target.value === 'DB') {
       formData.letters = 'DBX'
       formData.showList = [1,2,3,5]
-      renderS7_TCPHTML(formData.showList, formData)
+    } else if (e.target.value === '输入') {
+      formData.letters = 'I'
+      formData.showList = [1,2,5]
+    } else if (e.target.value === '输出') {
+      formData.letters = 'Q'
+      formData.showList = [1,2,5]
     }
+    renderS7_TCPHTML(formData.showList, formData)
   }
 }
 
