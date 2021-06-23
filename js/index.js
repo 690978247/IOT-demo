@@ -201,6 +201,6 @@ function blurData (e, prop) {
       e.target.value = 255
     }
   }
-
+  e.target.value = parseInt(e.target.value)
   formData[prop] = e.target.value
 }
