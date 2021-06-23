@@ -16,11 +16,10 @@ var addressData = {
   len: 1, // 长度
   addressOffset: 1, // 地址偏移量
   addressType: '字节', // 地址类型
-  showList: [], // 弹窗显示的form块
+  showList: [1,2,5], // 弹窗显示的form块
 }
-
-
-
+// 克隆一份数据用来做弹窗取消的回显
+var formData = JSON.parse(JSON.stringify(addressData))
 /* 方法 */
 // 打开变量弹窗
 function openPop() {
@@ -31,7 +30,7 @@ function openPop() {
   // S7_TCP 渲染弹窗
   if (popupData.protocolName === 'S7_TCP') {
     if (popupData.dataType === '二进制变量') {
-      renderS7_TCPHTML(addressData.showList, addressData)
+      renderS7_TCPHTML(formData.showList, formData)
     } /* else if (popupData.dataType === '有符号8位整型') {
       addressData.letters = 'MB'
       renderS7_TCPHTML([1,2], addressData)
@@ -45,11 +44,13 @@ function openPop() {
 function closePop () {
   let pop = document.getElementById('popup')
   pop.style.display = 'none'
+  formData = JSON.parse(JSON.stringify(addressData))
 }
 
 // 提交弹窗
 function confirmPop () {
   console.log(addressData)
+  addressData = JSON.parse(JSON.stringify(formData))
   closePop()
 }
 
@@ -160,16 +161,16 @@ function renderS7_TCPHTML(items = [], data = {}) {
 
 // 选择下拉内容
 function changeData (e, prop) {
-  addressData[prop] = e.target.value
+  formData[prop] = e.target.value
   if (prop === 'dataArea') {  // 数据区域部分需要重新渲染弹窗html元素
     if (e.target.value === '位') {
-      addressData.letters = 'M'
-      addressData.showList = [1,2,5]
-      renderS7_TCPHTML(addressData.showList, addressData)
+      formData.letters = 'M'
+      formData.showList = [1,2,5]
+      renderS7_TCPHTML(formData.showList, formData)
     } else if (e.target.value === 'DB') {
-      addressData.letters = 'DBX'
-      addressData.showList = [1,2,3,5]
-      renderS7_TCPHTML(addressData.showList, addressData)
+      formData.letters = 'DBX'
+      formData.showList = [1,2,3,5]
+      renderS7_TCPHTML(formData.showList, formData)
     }
   }
 }
@@ -201,5 +202,5 @@ function blurData (e, prop) {
     }
   }
 
-  addressData[prop] = e.target.value
+  formData[prop] = e.target.value
 }
