@@ -3,7 +3,7 @@
 // 协议名称： S7_TCP   Modbus_TCP  OPC_DA  OPC_UA  MC3E_Binary_Etherent  MCA1E_Binary_Etherent  Fins_TCP
 var popupData = {
   protocolName: 'S7_TCP',
-  dataType: '二进制变量'
+  dataType: '字符串'
 }
 
 // 定义一个提交的数据结构， 用来填写默认值与回显
@@ -32,12 +32,23 @@ function openPop() {
   if (popupData.protocolName === 'S7_TCP') {
     if (popupData.dataType === '二进制变量') {
       formData.showList = formData.showList.length === 0 ?  [1,2,5] : formData.showList
-      renderS7_TCPHTML(formData.showList, formData, popupData.dataType)
-    } else if (popupData.dataType === '有符号8位整型') {
+    } else if (popupData.dataType === '有符号8位整型' || popupData.dataType === '无符号8位整型') {
       formData.letters = 'MB'
       formData.showList = formData.showList.length === 0 ?  [1,2] : formData.showList
-      renderS7_TCPHTML(formData.showList, formData, popupData.dataType)
+    } else if (popupData.dataType === '有符号16位整型' || popupData.dataType === '无符号16位整型') {
+      formData.letters = 'MW'
+      formData.showList = formData.showList.length === 0 ?  [1,2] : formData.showList
+    } else if (popupData.dataType === '有符号32位整型' || popupData.dataType === '无符号32位整型' || popupData.dataType === 'F32位浮点数IEEE754' || popupData.dataType === '定时器') {
+      formData.letters = 'MD'
+      formData.showList = formData.showList.length === 0 ?  [1,2] : formData.showList
+    } else if (popupData.dataType === '有符号64位整型' || popupData.dataType === '无符号64位整型' || popupData.dataType === 'F64位浮点数IEEE754' || popupData.dataType === '日期'|| popupData.dataType === '时间'|| popupData.dataType === '日期时间') {
+      formData.showList = formData.showList.length === 0 ?  [1,4,7] : formData.showList
+    } else if (popupData.dataType === '文本变量8位字符集' || popupData.dataType === '文本变量16位字符集') {
+      formData.showList = formData.showList.length === 0 ?  [1,4,6] : formData.showList
+    } else if (popupData.dataType === '字符串' || popupData.dataType === '宽字符串') {
+      formData.showList = formData.showList.length === 0 ?  [1,4,6,7] : formData.showList
     }
+    renderS7_TCPHTML(formData.showList, formData, popupData.dataType)
   }
 
 
@@ -63,8 +74,6 @@ function renderS7_TCPHTML(items = [], data = {}, type) {
   // 1: 数据区域  2. 下拉块（M/DBX/I/Q/MB/DBB/IB/QB/MW/DBW/IW/QW/MD/DBD/ID/QD） 3.  DB号  4. 地址偏移量   5. 位   6. 长度   7.  地址类型 
  let wrap = document.getElementById('popup-body-wrap')
  let html = ``
- /* 二进制变量 */
- if (type === '二进制变量') {
   if (items.includes(1)) {
     html +=`
     <div class="PBW-block" >
@@ -159,7 +168,6 @@ function renderS7_TCPHTML(items = [], data = {}, type) {
       </div>
     `.trim()
   }
- }
 
  wrap.innerHTML = html
  
@@ -168,22 +176,108 @@ function renderS7_TCPHTML(items = [], data = {}, type) {
 // 选择下拉内容
 function changeData (e, prop, type) {
   formData[prop] = e.target.value
-  if (prop === 'dataArea') {  // 数据区域部分需要重新渲染弹窗html元素
-    if (e.target.value === '位') {
-      formData.letters = 'M'
-      formData.showList = [1,2,5]
-    } else if (e.target.value === 'DB') {
-      formData.letters = 'DBX'
-      formData.showList = [1,2,3,5]
-    } else if (e.target.value === '输入') {
-      formData.letters = 'I'
-      formData.showList = [1,2,5]
-    } else if (e.target.value === '输出') {
-      formData.letters = 'Q'
-      formData.showList = [1,2,5]
+  if (type === '二进制变量') {
+    if (prop === 'dataArea') {  // 数据区域部分需要重新渲染弹窗html元素
+      if (e.target.value === '位') {
+        formData.letters = 'M'
+        formData.showList = [1,2,5]
+      } else if (e.target.value === 'DB') {
+        formData.letters = 'DBX'
+        formData.showList = [1,2,3,5]
+      } else if (e.target.value === '输入') {
+        formData.letters = 'I'
+        formData.showList = [1,2,5]
+      } else if (e.target.value === '输出') {
+        formData.letters = 'Q'
+        formData.showList = [1,2,5]
+      }
     }
-    renderS7_TCPHTML(formData.showList, formData, type)
+  } else if (type === '有符号8位整型' || type === '无符号8位整型') {
+    if (prop === 'dataArea') {  // 数据区域部分需要重新渲染弹窗html元素
+      if (e.target.value === '位') {
+        formData.letters = 'MB'
+        formData.showList = [1,2]
+      } else if (e.target.value === 'DB') {
+        formData.letters = 'DBB'
+        formData.showList = [1,2,3]
+      } else if (e.target.value === '输入') {
+        formData.letters = 'IB'
+        formData.showList = [1,2]
+      } else if (e.target.value === '输出') {
+        formData.letters = 'QB'
+        formData.showList = [1,2]
+      }
+    }
+  } else if (type === '有符号16位整型' || type === '无符号16位整型') {
+    if (prop === 'dataArea') {  // 数据区域部分需要重新渲染弹窗html元素
+      if (e.target.value === '位') {
+        formData.letters = 'MW'
+        formData.showList = [1,2]
+      } else if (e.target.value === 'DB') {
+        formData.letters = 'DBW'
+        formData.showList = [1,2,3]
+      } else if (e.target.value === '输入') {
+        formData.letters = 'IW'
+        formData.showList = [1,2]
+      } else if (e.target.value === '输出') {
+        formData.letters = 'QW'
+        formData.showList = [1,2]
+      }
+    }
+  } else if (type === '有符号32位整型' || type === '无符号32位整型' || type === 'F32位浮点数IEEE754' || type === '定时器') {
+    if (prop === 'dataArea') {  // 数据区域部分需要重新渲染弹窗html元素
+      if (e.target.value === '位') {
+        formData.letters = 'MD'
+        formData.showList = [1,2]
+      } else if (e.target.value === 'DB') {
+        formData.letters = 'DBD'
+        formData.showList = [1,2,3]
+      } else if (e.target.value === '输入') {
+        formData.letters = 'ID'
+        formData.showList = [1,2]
+      } else if (e.target.value === '输出') {
+        formData.letters = 'QD'
+        formData.showList = [1,2]
+      }
+    }
+  } else if (type === '有符号64位整型' || type === '无符号64位整型' || type === 'F64位浮点数IEEE754' || type === '日期'|| type === '时间'|| type === '日期时间') {
+    if (prop === 'dataArea') {  // 数据区域部分需要重新渲染弹窗html元素
+      if (e.target.value === '位') {
+        formData.showList = [1,4,7]
+      } else if (e.target.value === 'DB') {
+        formData.showList = [1,3,4,7]
+      } else if (e.target.value === '输入') {
+        formData.showList = [1,4,7]
+      } else if (e.target.value === '输出') {
+        formData.showList = [1,4,7]
+      }
+    }
+  } else if (type === '文本变量8位字符集' || type === '文本变量16位字符集') {
+    if (prop === 'dataArea') {  // 数据区域部分需要重新渲染弹窗html元素
+      if (e.target.value === '位') {
+        formData.showList = [1,4,6]
+      } else if (e.target.value === 'DB') {
+        formData.showList = [1,3,4,6]
+      } else if (e.target.value === '输入') {
+        formData.showList = [1,4,6]
+      } else if (e.target.value === '输出') {
+        formData.showList = [1,4,6]
+      }
+    }
+  } else if (type === '字符串' || type === '宽字符串') {
+    if (prop === 'dataArea') {  // 数据区域部分需要重新渲染弹窗html元素
+      if (e.target.value === '位') {
+        formData.showList = [1,4,6,7]
+      } else if (e.target.value === 'DB') {
+        formData.showList = [1,3,4,6,7]
+      } else if (e.target.value === '输入') {
+        formData.showList = [1,4,6,7]
+      } else if (e.target.value === '输出') {
+        formData.showList = [1,4,6,7]
+      }
+    }
   }
+  renderS7_TCPHTML(formData.showList, formData, type)
 }
 
 function blurData (e, prop) {
