@@ -15,7 +15,8 @@ var addressData = {
   bit: 0,  //  位
   len: 1, // 长度
   addressOffset: 1, // 地址偏移量
-  addressType: '字节' // 地址类型
+  addressType: '字节', // 地址类型
+  showList: [], // 弹窗显示的form块
 }
 
 
@@ -30,7 +31,7 @@ function openPop() {
   // S7_TCP 渲染弹窗
   if (popupData.protocolName === 'S7_TCP') {
     if (popupData.dataType === '二进制变量') {
-      renderS7_TCPHTML([1,2,5], addressData)
+      renderS7_TCPHTML(addressData.showList, addressData)
     } /* else if (popupData.dataType === '有符号8位整型') {
       addressData.letters = 'MB'
       renderS7_TCPHTML([1,2], addressData)
@@ -161,9 +162,14 @@ function renderS7_TCPHTML(items = [], data = {}) {
 function changeData (e, prop) {
   addressData[prop] = e.target.value
   if (prop === 'dataArea') {  // 数据区域部分需要重新渲染弹窗html元素
-    if (e.target.value === 'DB') {
+    if (e.target.value === '位') {
+      addressData.letters = 'M'
+      addressData.showList = [1,2,5]
+      renderS7_TCPHTML(addressData.showList, addressData)
+    } else if (e.target.value === 'DB') {
       addressData.letters = 'DBX'
-      renderS7_TCPHTML([1,2,3,5], addressData)
+      addressData.showList = [1,2,3,5]
+      renderS7_TCPHTML(addressData.showList, addressData)
     }
   }
 }
