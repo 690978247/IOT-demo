@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="./styles/common.css">
+  <link rel="stylesheet" href="//at.alicdn.com/t/font_2353119_1nckpkmcjqx.css">
+  <title>Document</title>
+</head>
+<body>
+  <!-- <span>IOT远程运维 -- 变量管理</span> -->
+  <!-- 1.表格部分 -->
+  <table class="demo-table" >
+      <thead>
+        <tr>
+          <th>序号</th>   
+          <th>变量名</th>   
+          <th>变量描述</th>   
+          <th>数据类型</th>   
+          <th>变量地址</th>   
+          <th>字符长度</th> 
+          <th>缩放比</th> 
+          <th>数据归档</th>  
+        </tr>
+    </thead>  
+    <tbody>
+      <tr>
+        <td>1</td>
+        <td></td>
+        <td></td>
+        <td>二进制变量</td>
+        <td id="address">
+          <div class="address-text" >
+            <input class="address-input"  type="text" />
+            <div class="address-btn" onclick="openPop()" >
+              . . .
+            </div>
+          </div>
+        </td>
+        <td></td>
+        <td></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>   
+  <!-- 2. 弹窗部分 -->
+  <!-- 弹窗部分 -->
+  <div class="popup" id="popup">
+    <div class="popup-wrap">
+      <div class="popup-head">
+        <span>选择地址</span>
+        <i class="iconfont iconguanbi1 popup-close" onclick="closePop(event)"></i>
+      </div>
+      <div class="popup-body">
+      </div>
+    </div>
+  </div>
+
+  <div>
+    
+  </div>
+</body>
+<script src="./js/index.js" ></script>
+</html>
