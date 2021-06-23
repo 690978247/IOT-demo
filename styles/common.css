@@ -87,7 +87,7 @@
     box-shadow: 0 1px 3px rgba(0,0,0,.3);
     box-sizing: border-box;
     margin-top: 16vh;
-    width: 1020px;
+    width: 760px;
 }
 /* 头部样式 */
 .popup-head {
@@ -116,6 +116,46 @@
   font-size: 14px;
   word-break: break-all;
 }
+
+.popup-body-wrap {
+  padding: 20px;
+}
+
+/* .PBW-block {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 38px;
+  line-height: 38px;
+  margin-bottom: 12px;
+  flex-wrap: wrap;
+} */
+
+.PBW-block {
+  display: inline-block;
+  height: 38px;
+  line-height: 38px;
+  margin-bottom: 12px;
+  width: 330px;
+}
+
+.PBW-block .PBW-block-item{
+  height: 100%;
+  text-align: center;
+  width: 340px;
+}
+
+.PBW-block .PBW-block-item span {
+  display: inline-block;
+  width: 76px;
+}
+
+.PBW-block .PBW-block-item select,  .PBW-block .PBW-block-item input{
+  width: calc(100% - 120px);
+  box-sizing: border-box;
+  height: 30px;
+}
+
 
 /* 底部样式 */
 .popup-footer {
