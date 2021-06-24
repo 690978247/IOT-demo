@@ -2,8 +2,8 @@
 /* 定义变量 */
 // 协议名称： S7_TCP   Modbus_TCP  OPC_DA  OPC_UA  MC3E_Binary_Etherent  MCA1E_Binary_Etherent  Fins_TCP
 var popupData = {
-  protocolName: 'MCA1E_Binary_Etherent',
-  dataType: '字符串',
+  protocolName: 'Fins_TCP',
+  dataType: '二进制变量',
   dataValue: '',
 }
 
@@ -351,6 +351,141 @@ function confirmPop () {
         popupData.dataValue = `TN${addressData.address}.${addressData.bit}`
       } else if (addressData.dataArea === '计数器（当前值）（CN）') {
         popupData.dataValue = `CN${addressData.address}.${addressData.bit}`
+      }
+    }
+  } else if (popupData.protocolName === 'Fins_TCP') {
+    // 1. 数据区域    2.  地址    3.  位    4. 长度
+    if (arrayEqual(addressData.showList, [1,2]) || arrayEqual(addressData.showList, [1,2,4])) {
+      if (addressData.dataArea === 'CIO') {
+        popupData.dataValue = `CIO${addressData.address}`
+      } else if (addressData.dataArea === 'WR') {
+        popupData.dataValue = `W${addressData.address}`
+      } else if (addressData.dataArea === 'HR') {
+        popupData.dataValue = `H${addressData.address}`
+      } else if (addressData.dataArea === 'AR') {
+        popupData.dataValue = `A${addressData.address}`
+      } else if (addressData.dataArea === 'TIM/CNT(Complettion Flag)') {
+        popupData.dataValue = `T${addressData.address}`
+      } else if (addressData.dataArea === 'DM') {
+        popupData.dataValue = `D${addressData.address}`
+      } else if (addressData.dataArea === 'EM current bank') {
+        popupData.dataValue = `E${addressData.address}`
+      } else if (addressData.dataArea === 'EM bank 0') {
+        popupData.dataValue = `E00_${addressData.address}`
+      } else if (addressData.dataArea === 'EM bank 1') {
+        popupData.dataValue = `E01_${addressData.address}`
+      } else if (addressData.dataArea === 'EM bank 2') {
+        popupData.dataValue = `E02_${addressData.address}`
+      } else if (addressData.dataArea === 'EM bank 3') {
+        popupData.dataValue = `E03_${addressData.address}`
+      } else if (addressData.dataArea === 'EM bank 4') {
+        popupData.dataValue = `E04_${addressData.address}`
+      } else if (addressData.dataArea === 'EM bank 5') {
+        popupData.dataValue = `E05_${addressData.address}`
+      } else if (addressData.dataArea === 'EM bank 6') {
+        popupData.dataValue = `E06_${addressData.address}`
+      } else if (addressData.dataArea === 'EM bank 7') {
+        popupData.dataValue = `E07_${addressData.address}`
+      } else if (addressData.dataArea === 'EM bank 8') {
+        popupData.dataValue = `E08_${addressData.address}`
+      } else if (addressData.dataArea === 'EM bank 9') {
+        popupData.dataValue = `E09_${addressData.address}`
+      } else if (addressData.dataArea === 'EM bank A') {
+        popupData.dataValue = `E0A_${addressData.address}`
+      } else if (addressData.dataArea === 'EM bank B') {
+        popupData.dataValue = `E0B_${addressData.address}`
+      } else if (addressData.dataArea === 'EM bank C') {
+        popupData.dataValue = `E0C_${addressData.address}`
+      } else if (addressData.dataArea === 'EM bank D') {
+        popupData.dataValue = `E0D_${addressData.address}`
+      } else if (addressData.dataArea === 'EM bank E') {
+        popupData.dataValue = `E0E_${addressData.address}`
+      } else if (addressData.dataArea === 'EM bank F') {
+        popupData.dataValue = `E0F_${addressData.address}`
+      } else if (addressData.dataArea === 'EM bank 10') {
+        popupData.dataValue = `E10_${addressData.address}`
+      } else if (addressData.dataArea === 'EM bank 11') {
+        popupData.dataValue = `E11_${addressData.address}`
+      } else if (addressData.dataArea === 'EM bank 12') {
+        popupData.dataValue = `E12_${addressData.address}`
+      } else if (addressData.dataArea === 'EM bank 13') {
+        popupData.dataValue = `E13_${addressData.address}`
+      } else if (addressData.dataArea === 'EM bank 14') {
+        popupData.dataValue = `E14_${addressData.address}`
+      } else if (addressData.dataArea === 'EM bank 15') {
+        popupData.dataValue = `E15_${addressData.address}`
+      } else if (addressData.dataArea === 'EM bank 16') {
+        popupData.dataValue = `E16_${addressData.address}`
+      } else if (addressData.dataArea === 'EM bank 17') {
+        popupData.dataValue = `E17_${addressData.address}`
+      } else if (addressData.dataArea === 'EM bank 18') {
+        popupData.dataValue = `E18_${addressData.address}`
+      }
+    } else if (arrayEqual(addressData.showList, [1,2,3])) {
+      if (addressData.dataArea === 'CIO') {
+        popupData.dataValue = `CIO${addressData.address}.${addressData.bit}`
+      } else if (addressData.dataArea === 'WR') {
+        popupData.dataValue = `W${addressData.address}.${addressData.bit}`
+      } else if (addressData.dataArea === 'HR') {
+        popupData.dataValue = `H${addressData.address}.${addressData.bit}`
+      } else if (addressData.dataArea === 'AR') {
+        popupData.dataValue = `A${addressData.address}.${addressData.bit}`
+      } else if (addressData.dataArea === 'TIM/CNT(Complettion Flag)') {
+        popupData.dataValue = `T${addressData.address}.${addressData.bit}`
+      } else if (addressData.dataArea === 'DM') {
+        popupData.dataValue = `D${addressData.address}.${addressData.bit}`
+      } else if (addressData.dataArea === 'EM current bank') {
+        popupData.dataValue = `E${addressData.address}.${addressData.bit}`
+      } else if (addressData.dataArea === 'EM bank 0') {
+        popupData.dataValue = `E00_${addressData.address}.${addressData.bit}`
+      } else if (addressData.dataArea === 'EM bank 1') {
+        popupData.dataValue = `E01_${addressData.address}.${addressData.bit}`
+      } else if (addressData.dataArea === 'EM bank 2') {
+        popupData.dataValue = `E02_${addressData.address}.${addressData.bit}`
+      } else if (addressData.dataArea === 'EM bank 3') {
+        popupData.dataValue = `E03_${addressData.address}.${addressData.bit}`
+      } else if (addressData.dataArea === 'EM bank 4') {
+        popupData.dataValue = `E04_${addressData.address}.${addressData.bit}`
+      } else if (addressData.dataArea === 'EM bank 5') {
+        popupData.dataValue = `E05_${addressData.address}.${addressData.bit}`
+      } else if (addressData.dataArea === 'EM bank 6') {
+        popupData.dataValue = `E06_${addressData.address}.${addressData.bit}`
+      } else if (addressData.dataArea === 'EM bank 7') {
+        popupData.dataValue = `E07_${addressData.address}.${addressData.bit}`
+      } else if (addressData.dataArea === 'EM bank 8') {
+        popupData.dataValue = `E08_${addressData.address}.${addressData.bit}`
+      } else if (addressData.dataArea === 'EM bank 9') {
+        popupData.dataValue = `E09_${addressData.address}.${addressData.bit}`
+      } else if (addressData.dataArea === 'EM bank A') {
+        popupData.dataValue = `E0A_${addressData.address}.${addressData.bit}`
+      } else if (addressData.dataArea === 'EM bank B') {
+        popupData.dataValue = `E0B_${addressData.address}.${addressData.bit}`
+      } else if (addressData.dataArea === 'EM bank C') {
+        popupData.dataValue = `E0C_${addressData.address}.${addressData.bit}`
+      } else if (addressData.dataArea === 'EM bank D') {
+        popupData.dataValue = `E0D_${addressData.address}.${addressData.bit}`
+      } else if (addressData.dataArea === 'EM bank E') {
+        popupData.dataValue = `E0E_${addressData.address}.${addressData.bit}`
+      } else if (addressData.dataArea === 'EM bank F') {
+        popupData.dataValue = `E0F_${addressData.address}.${addressData.bit}`
+      } else if (addressData.dataArea === 'EM bank 10') {
+        popupData.dataValue = `E10_${addressData.address}.${addressData.bit}`
+      } else if (addressData.dataArea === 'EM bank 11') {
+        popupData.dataValue = `E11_${addressData.address}.${addressData.bit}`
+      } else if (addressData.dataArea === 'EM bank 12') {
+        popupData.dataValue = `E12_${addressData.address}.${addressData.bit}`
+      } else if (addressData.dataArea === 'EM bank 13') {
+        popupData.dataValue = `E13_${addressData.address}.${addressData.bit}`
+      } else if (addressData.dataArea === 'EM bank 14') {
+        popupData.dataValue = `E14_${addressData.address}.${addressData.bit}`
+      } else if (addressData.dataArea === 'EM bank 15') {
+        popupData.dataValue = `E15_${addressData.address}.${addressData.bit}`
+      } else if (addressData.dataArea === 'EM bank 16') {
+        popupData.dataValue = `E16_${addressData.address}.${addressData.bit}`
+      } else if (addressData.dataArea === 'EM bank 17') {
+        popupData.dataValue = `E17_${addressData.address}.${addressData.bit}`
+      } else if (addressData.dataArea === 'EM bank 18') {
+        popupData.dataValue = `E18_${addressData.address}.${addressData.bit}`
       }
     }
   }
@@ -838,12 +973,12 @@ if (items.includes(3)) {
           <option value="7" ${data.bit === '7' ? 'selected' : ''} >7</option>
           <option value="8" ${data.bit === '8' ? 'selected' : ''} >8</option>
           <option value="9" ${data.bit === '9' ? 'selected' : ''} >9</option>
-          <option value="A" ${data.bit === 'A' ? 'selected' : ''} >A</option>
-          <option value="B" ${data.bit === 'B' ? 'selected' : ''} >B</option>
-          <option value="C" ${data.bit === 'C' ? 'selected' : ''} >C</option>
-          <option value="D" ${data.bit === 'D' ? 'selected' : ''} >D</option>
-          <option value="E" ${data.bit === 'E' ? 'selected' : ''} >E</option>
-          <option value="F" ${data.bit === 'F' ? 'selected' : ''} >F</option>
+          <option value="10" ${data.bit === '10' ? 'selected' : ''} >10</option>
+          <option value="11" ${data.bit === '11' ? 'selected' : ''} >11</option>
+          <option value="12" ${data.bit === '12' ? 'selected' : ''} >12</option>
+          <option value="13" ${data.bit === '13' ? 'selected' : ''} >13</option>
+          <option value="14" ${data.bit === '14' ? 'selected' : ''} >14</option>
+          <option value="15" ${data.bit === '15' ? 'selected' : ''} >15</option>
         </select>
       </div>
     </div>
