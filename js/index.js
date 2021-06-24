@@ -2,7 +2,7 @@
 /* 定义变量 */
 // 协议名称： S7_TCP   Modbus_TCP  OPC_DA  OPC_UA  MC3E_Binary_Etherent  MCA1E_Binary_Etherent  Fins_TCP
 var popupData = {
-  protocolName: 'MC3E_Binary_Etherent',
+  protocolName: 'MCA1E_Binary_Etherent',
   dataType: '字符串'
 }
 
@@ -74,7 +74,7 @@ function openPop() {
       formData.showList = formData.showList.length === 0 ?  [1,2,4] : formData.showList
     } 
     renderModbus_TCPHTML(formData.showList, formData, popupData.dataType)
-  } else if (popupData.protocolName === 'MC3E_Binary_Etherent') {
+  } else if (popupData.protocolName === 'MC3E_Binary_Etherent') { //  渲染 MC3E_Binary_Etherent 弹窗
     formData.dataArea = formData.dataArea ? formData.dataArea : '输入寄存器（X）'
     if (popupData.dataType === '二进制变量') {
       formData.showList = formData.showList.length === 0 ?  [1,2] : formData.showList
@@ -90,6 +90,22 @@ function openPop() {
       formData.showList = formData.showList.length === 0 ?  [1,2] : formData.showList
     }
     renderMBEHTML(formData.showList, formData, popupData.dataType)
+  } else if (popupData.protocolName === 'MCA1E_Binary_Etherent') { //  渲染 MCA1E_Binary_Etherent 弹窗
+    formData.dataArea = formData.dataArea ? formData.dataArea : '输入寄存器（X）'
+    if (popupData.dataType === '二进制变量') {
+      formData.showList = formData.showList.length === 0 ?  [1,2] : formData.showList
+    }  else if (popupData.dataType === '字符串') {
+      // 此处判断赋默认值还是回显值
+      let areas = ['数据寄存器（D）', '链接寄存器（W）', '定时器（当前值）（TN）', '计数器（当前值）（CN）']
+      formData.dataArea = areas.includes(formData.dataArea) ? formData.dataArea : '数据寄存器（D）'
+      formData.showList = formData.showList.length === 0 ?  [1,2,4] : formData.showList
+    } else {
+      // 此处判断赋默认值还是回显值
+      let areas = ['数据寄存器（D）', '扩展寄存器（R）', '定时器（当前值）（TN）', '计数器（当前值）（CN）']
+      formData.dataArea = areas.includes(formData.dataArea) ? formData.dataArea : '数据寄存器（D）'
+      formData.showList = formData.showList.length === 0 ?  [1,2] : formData.showList
+    }
+    renderMABEHTML(formData.showList, formData, popupData.dataType)
   }
 
 
@@ -348,56 +364,151 @@ function renderMBEHTML (items = [], data = {}, type) {
       }
   }
 
-    if (items.includes(2)) {
-      html += `
-        <div class="PBW-block" >
-          <div class="PBW-block-item">
-            <span>偏移地址</span>
-            <input type="number" min="0" value="${data.address}" onblur="blurData(event, 'address')" >
-          </div>
+  if (items.includes(2)) {
+    html += `
+      <div class="PBW-block" >
+        <div class="PBW-block-item">
+          <span>偏移地址</span>
+          <input type="number" min="0" value="${data.address}" onblur="blurData(event, 'address')" >
         </div>
-      `.trim()
-    }
-  
-    if (items.includes(3)) {
-      html += `
-        <div class="PBW-block" >
-          <div class="PBW-block-item">
-            <span>位</span>
-            <select onchange="changeMBEData(event, 'bit', '${type}')">
-              <option value="0" ${data.bit === '0' ? 'selected' : ''} >0</option>
-              <option value="1" ${data.bit === '1' ? 'selected' : ''} >1</option>
-              <option value="2" ${data.bit === '2' ? 'selected' : ''} >2</option>
-              <option value="3" ${data.bit === '3' ? 'selected' : ''} >3</option>
-              <option value="4" ${data.bit === '4' ? 'selected' : ''} >4</option>
-              <option value="5" ${data.bit === '5' ? 'selected' : ''} >5</option>
-              <option value="6" ${data.bit === '6' ? 'selected' : ''} >6</option>
-              <option value="7" ${data.bit === '7' ? 'selected' : ''} >7</option>
-              <option value="8" ${data.bit === '8' ? 'selected' : ''} >8</option>
-              <option value="9" ${data.bit === '9' ? 'selected' : ''} >9</option>
-              <option value="A" ${data.bit === 'A' ? 'selected' : ''} >A</option>
-              <option value="B" ${data.bit === 'B' ? 'selected' : ''} >B</option>
-              <option value="C" ${data.bit === 'C' ? 'selected' : ''} >C</option>
-              <option value="D" ${data.bit === 'D' ? 'selected' : ''} >D</option>
-              <option value="E" ${data.bit === 'E' ? 'selected' : ''} >E</option>
-              <option value="F" ${data.bit === 'F' ? 'selected' : ''} >F</option>
-            </select>
-          </div>
+      </div>
+    `.trim()
+  }
+
+  if (items.includes(3)) {
+    html += `
+      <div class="PBW-block" >
+        <div class="PBW-block-item">
+          <span>位</span>
+          <select onchange="changeMBEData(event, 'bit', '${type}')">
+            <option value="0" ${data.bit === '0' ? 'selected' : ''} >0</option>
+            <option value="1" ${data.bit === '1' ? 'selected' : ''} >1</option>
+            <option value="2" ${data.bit === '2' ? 'selected' : ''} >2</option>
+            <option value="3" ${data.bit === '3' ? 'selected' : ''} >3</option>
+            <option value="4" ${data.bit === '4' ? 'selected' : ''} >4</option>
+            <option value="5" ${data.bit === '5' ? 'selected' : ''} >5</option>
+            <option value="6" ${data.bit === '6' ? 'selected' : ''} >6</option>
+            <option value="7" ${data.bit === '7' ? 'selected' : ''} >7</option>
+            <option value="8" ${data.bit === '8' ? 'selected' : ''} >8</option>
+            <option value="9" ${data.bit === '9' ? 'selected' : ''} >9</option>
+            <option value="A" ${data.bit === 'A' ? 'selected' : ''} >A</option>
+            <option value="B" ${data.bit === 'B' ? 'selected' : ''} >B</option>
+            <option value="C" ${data.bit === 'C' ? 'selected' : ''} >C</option>
+            <option value="D" ${data.bit === 'D' ? 'selected' : ''} >D</option>
+            <option value="E" ${data.bit === 'E' ? 'selected' : ''} >E</option>
+            <option value="F" ${data.bit === 'F' ? 'selected' : ''} >F</option>
+          </select>
         </div>
-      `.trim()
-    }
-  
-    if (items.includes(4)) {
-      html += `
-        <div class="PBW-block" >
-          <div class="PBW-block-item">
-            <span>长度</span>
-            <input type="number" min="1" max="255" value="${data.len}" onblur="blurData(event, 'len')" >
-          </div>
+      </div>
+    `.trim()
+  }
+
+  if (items.includes(4)) {
+    html += `
+      <div class="PBW-block" >
+        <div class="PBW-block-item">
+          <span>长度</span>
+          <input type="number" min="1" max="255" value="${data.len}" onblur="blurData(event, 'len')" >
         </div>
-      `.trim()
+      </div>
+    `.trim()
+  }
+  wrap.innerHTML = html
+}
+
+// MCA1E_Binary_Etherent协议 弹窗渲染函数
+function renderMABEHTML(items = [], data = {}, type) {
+  // 1. 数据区域    2.  地址    3.  位    4. 长度
+  let wrap = document.getElementById('popup-body-wrap')
+  let html = ``
+  if (items.includes(1)) {
+    if (type === '二进制变量') {
+      html +=`
+        <div class="PBW-block" >
+            <div class="PBW-block-item" >
+              <span>数据区域</span>
+              <select onchange="changeMABEData(event, 'dataArea', '${type}')" >
+                <option value="输入寄存器（X）" ${data.dataArea === '输入寄存器（X）' ? 'selected' : ''} >输入寄存器（X）</option>
+                <option value="输出寄存器（Y）" ${data.dataArea === '输出寄存器（Y）' ? 'selected' : ''} >输出寄存器（Y）</option>
+                <option value="辅助继电器（M）" ${data.dataArea === '辅助继电器（M）' ? 'selected' : ''} >辅助继电器（M）</option>
+                <option value="状态（S）" ${data.dataArea === '状态（S）' ? 'selected' : ''} >状态（S）</option>
+                <option value="数据寄存器（D）" ${data.dataArea === '数据寄存器（D）' ? 'selected' : ''} >数据寄存器（D）</option>
+                <option value="扩展寄存器（R）" ${data.dataArea === '扩展寄存器（R）' ? 'selected' : ''} >扩展寄存器（R）</option>
+                <option value="定时器（触点）（TS）" ${data.dataArea === '定时器（触点）（TS）' ? 'selected' : ''} >定时器（触点）（TS）</option>
+                <option value="定时器（当前值）（TN）" ${data.dataArea === '定时器（当前值）（TN）' ? 'selected' : ''} >定时器（当前值）（TN）</option>
+                <option value="计数器（触点）（CS）" ${data.dataArea === '计数器（触点）（CS）' ? 'selected' : ''} >计数器（触点）（CS）</option>
+                <option value="计数器（当前值）（CN）" ${data.dataArea === '计数器（当前值）（CN）' ? 'selected' : ''} >计数器（当前值）（CN）</option>
+              </select>
+            </div>
+        </div>
+        `.trim()
+    } else {
+      html +=`
+        <div class="PBW-block" >
+            <div class="PBW-block-item" >
+              <span>数据区域</span>
+              <select onchange="changeMABEData(event, 'dataArea', '${type}')" >
+                <option value="数据寄存器（D）" ${data.dataArea === '数据寄存器（D）' ? 'selected' : ''} >数据寄存器（D）</option>
+                <option value="扩展寄存器（R）" ${data.dataArea === '扩展寄存器（R）' ? 'selected' : ''} >扩展寄存器（R）</option>
+                <option value="定时器（当前值）（TN）" ${data.dataArea === '定时器（当前值）（TN）' ? 'selected' : ''} >定时器（当前值）（TN）</option>
+                <option value="计数器（当前值）（CN）" ${data.dataArea === '计数器（当前值）（CN）' ? 'selected' : ''} >计数器（当前值）（CN）</option>
+              </select>
+            </div>
+        </div>
+        `.trim()
     }
-    wrap.innerHTML = html
+  }
+
+  if (items.includes(2)) {
+    html += `
+      <div class="PBW-block" >
+        <div class="PBW-block-item">
+          <span>偏移地址</span>
+          <input type="number" min="0" value="${data.address}" onblur="blurData(event, 'address')" >
+        </div>
+      </div>
+    `.trim()
+  }
+
+  if (items.includes(3)) {
+    html += `
+      <div class="PBW-block" >
+        <div class="PBW-block-item">
+          <span>位</span>
+          <select onchange="changeMABEData(event, 'bit', '${type}')">
+            <option value="0" ${data.bit === '0' ? 'selected' : ''} >0</option>
+            <option value="1" ${data.bit === '1' ? 'selected' : ''} >1</option>
+            <option value="2" ${data.bit === '2' ? 'selected' : ''} >2</option>
+            <option value="3" ${data.bit === '3' ? 'selected' : ''} >3</option>
+            <option value="4" ${data.bit === '4' ? 'selected' : ''} >4</option>
+            <option value="5" ${data.bit === '5' ? 'selected' : ''} >5</option>
+            <option value="6" ${data.bit === '6' ? 'selected' : ''} >6</option>
+            <option value="7" ${data.bit === '7' ? 'selected' : ''} >7</option>
+            <option value="8" ${data.bit === '8' ? 'selected' : ''} >8</option>
+            <option value="9" ${data.bit === '9' ? 'selected' : ''} >9</option>
+            <option value="A" ${data.bit === 'A' ? 'selected' : ''} >A</option>
+            <option value="B" ${data.bit === 'B' ? 'selected' : ''} >B</option>
+            <option value="C" ${data.bit === 'C' ? 'selected' : ''} >C</option>
+            <option value="D" ${data.bit === 'D' ? 'selected' : ''} >D</option>
+            <option value="E" ${data.bit === 'E' ? 'selected' : ''} >E</option>
+            <option value="F" ${data.bit === 'F' ? 'selected' : ''} >F</option>
+          </select>
+        </div>
+      </div>
+    `.trim()
+  }
+
+  if (items.includes(4)) {
+    html += `
+      <div class="PBW-block" >
+        <div class="PBW-block-item">
+          <span>长度</span>
+          <input type="number" min="1" max="255" value="${data.len}" onblur="blurData(event, 'len')" >
+        </div>
+      </div>
+    `.trim()
+  }
+  wrap.innerHTML = html
 }
 
 // 选择下拉内容 -- S7_TCP协议
@@ -550,6 +661,23 @@ function changeMBEData (e, prop, type) {
   }
 
   renderMBEHTML(formData.showList, formData, type)
+}
+
+// 选择下拉内容 -- MC3E_Binary_Etherent协议
+function changeMABEData (e, prop, type) {
+  formData[prop] = e.target.value
+  if (type === '二进制变量') {
+    let types = ['输入寄存器（X）','输出寄存器（Y）','辅助继电器（M）','状态（S）','定时器（触点）（TS）','计数器（触点）（CS）']
+    if (prop === 'dataArea') {  // 数据区域部分需要重新渲染弹窗html元素
+      if (types.includes(e.target.value)) {
+        formData.showList = [1,2]
+      } else {
+        formData.showList = [1,2,3]
+      }
+    }
+  }
+
+  renderMABEHTML(formData.showList, formData, type)
 }
 
 function blurData (e, prop) {
