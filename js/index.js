@@ -18,7 +18,7 @@ var addressData = {
   addressType: '字节', // 地址类型
   addressValue: '', // 最后组装出来的变量值
   showList: [], // 弹窗显示的form块
-  address: 1, // Modbus_TCP 地址
+  address: 1, // Modbus_TCP 偏移地址
 }
 // 克隆一份数据用来做弹窗取消的回显
 var formData = JSON.parse(JSON.stringify(addressData))
@@ -54,9 +54,12 @@ function openPop() {
     }
     renderS7_TCPHTML(formData.showList, formData, popupData.dataType)
   } else if (popupData.protocolName === 'Modbus_TCP') { //  渲染 Modbus_TCP弹窗
+    let types = ['有符号8位整型','有符号16位整型','有符号32位整型','有符号64位整型','无符号8位整型','无符号16位整型','无符号32位整型','无符号64位整型','F32位浮点数IEEE754','F64位浮点数IEEE754']
     if (popupData.dataType === '二进制变量') {
       formData.showList = formData.showList.length === 0 ?  [1,2] : formData.showList
-    } 
+    }  else if (types.includes(popupData.dataType)) {
+      formData.showList = formData.showList.length === 0 ?  [1,2] : formData.showList
+    }
     renderModbus_TCPHTML(formData.showList, formData, popupData.dataType)
   }
 
@@ -183,7 +186,7 @@ function renderS7_TCPHTML(items = [], data = {}, type) {
 
 // Modbus_TCP协议 弹窗渲染函数
 function renderModbus_TCPHTML (items = [], data = {}, type) {
-  // 1. 数据区域  2. 地址   3.位  4. 长度
+  // 1. 数据区域  2. 偏移地址   3.位  4. 长度
   let wrap = document.getElementById('popup-body-wrap')
   let html = ``
   if (items.includes(1)) {
@@ -195,7 +198,7 @@ function renderModbus_TCPHTML (items = [], data = {}, type) {
             <option value="线圈状态" ${data.dataArea === '线圈状态' ? 'selected' : ''} >线圈状态</option>
             <option value="离散输入状态" ${data.dataArea === '离散输入状态' ? 'selected' : ''} >离散输入状态</option>
             <option value="输入寄存器" ${data.dataArea === '输入寄存器' ? 'selected' : ''} >输入寄存器</option>
-            <option value="输出寄存器" ${data.dataArea === '输出寄存器' ? 'selected' : ''} >输出寄存器</option>
+            <option value="保持寄存器" ${data.dataArea === '保持寄存器' ? 'selected' : ''} >保持寄存器</option>
           </select>
         </div>
     </div>
@@ -205,7 +208,7 @@ function renderModbus_TCPHTML (items = [], data = {}, type) {
     html += `
       <div class="PBW-block" >
         <div class="PBW-block-item">
-          <span>地址</span>
+          <span>偏移地址</span>
           <input type="number" min="0" value="${data.address}" onblur="blurData(event, 'address')" >
         </div>
       </div>
@@ -376,7 +379,7 @@ function changeModule_TCPData (e, prop, type) {
         formData.showList = [1,2]
       } else if (e.target.value === '输入寄存器') {
         formData.showList = [1,2,3]
-      } else if (e.target.value === '输出寄存器') {
+      } else if (e.target.value === '保持寄存器') {
         formData.showList = [1,2,3]
       }
     }
