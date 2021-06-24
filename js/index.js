@@ -3,7 +3,7 @@
 // 协议名称： S7_TCP   Modbus_TCP  OPC_DA  OPC_UA  MC3E_Binary_Etherent  MCA1E_Binary_Etherent  Fins_TCP
 var popupData = {
   protocolName: 'S7_TCP',
-  dataType: '二进制变量',
+  dataType: '有符号64位整型',
   dataValue: '',
 }
 
@@ -41,13 +41,13 @@ function openPop() {
     if (popupData.dataType === '二进制变量') {
       formData.showList = formData.showList.length === 0 ?  [1,2,5] : formData.showList
     } else if (popupData.dataType === '有符号8位整型' || popupData.dataType === '无符号8位整型') {
-      formData.letters = 'MB'
+      formData.letters = formData.dataArea === '位' ?  formData.letters = 'MB' : formData.letters
       formData.showList = formData.showList.length === 0 ?  [1,2] : formData.showList
     } else if (popupData.dataType === '有符号16位整型' || popupData.dataType === '无符号16位整型') {
-      formData.letters = 'MW'
+      formData.letters = formData.dataArea === '位' ?  formData.letters = 'MW' : formData.letters
       formData.showList = formData.showList.length === 0 ?  [1,2] : formData.showList
     } else if (popupData.dataType === '有符号32位整型' || popupData.dataType === '无符号32位整型' || popupData.dataType === 'F32位浮点数IEEE754' || popupData.dataType === '定时器') {
-      formData.letters = 'MD'
+      formData.letters = formData.dataArea === '位' ?  formData.letters = 'MD' : formData.letters
       formData.showList = formData.showList.length === 0 ?  [1,2] : formData.showList
     } else if (popupData.dataType === '有符号64位整型' || popupData.dataType === '无符号64位整型' || popupData.dataType === 'F64位浮点数IEEE754' || popupData.dataType === '日期'|| popupData.dataType === '时间'|| popupData.dataType === '日期时间') {
       formData.showList = formData.showList.length === 0 ?  [1,4,7] : formData.showList
@@ -140,13 +140,33 @@ function confirmPop () {
 
   if (popupData.protocolName === 'S7_TCP') {
     // 1: 数据区域  2. 寄存器字母块（M/DBX/I/Q/MB/DBB/IB/QB/MW/DBW/IW/QW/MD/DBD/ID/QD） 3.  DB号  4. 地址偏移量   5. 位   6. 长度   7.  地址类型 
-   if (addressData.showList === [1,2,5]) {
+    /* 根据showList中的代码块  处理生成的变量 */
+   if (arrayEqual(addressData.showList, [1,2,5])) {
+    popupData.dataValue = `${addressData.letters + addressData.lettleValue}.${addressData.bit}` 
+   } else if (arrayEqual(addressData.showList, [1,2,3,5])) {
+    popupData.dataValue = `${addressData.dataArea + addressData.DBNum}.${addressData.letters + addressData.lettleValue}.${addressData.bit}`
+   } else if (arrayEqual(addressData.showList, [1,2])) {
+    popupData.dataValue = `${addressData.letters + addressData.lettleValue}`
+   } else if (arrayEqual(addressData.showList, [1,2,3])) {
+    popupData.dataValue = `${addressData.dataArea + addressData.DBNum}.${addressData.letters + addressData.lettleValue}`
+   } else if (arrayEqual(addressData.showList, [1,4,7])) {
+    
    }
   }
   
   console.log(popupData)
   input.value = popupData.dataValue
   closePop()
+}
+
+// 判断两个数组是否相等
+function arrayEqual(arr1, arr2) {
+  if (arr1 === arr2) return true;
+  if (arr1.length != arr2.length) return false;
+  for (var i = 0; i < arr1.length; ++i) {
+      if (arr1[i] !== arr2[i]) return false;
+  }
+  return true;
 }
 
 // S7_TCP协议 弹窗渲染函数
