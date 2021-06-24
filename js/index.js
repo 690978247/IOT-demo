@@ -2,7 +2,7 @@
 /* 定义变量 */
 // 协议名称： S7_TCP   Modbus_TCP  OPC_DA  OPC_UA  MC3E_Binary_Etherent  MCA1E_Binary_Etherent  Fins_TCP
 var popupData = {
-  protocolName: 'S7_TCP',
+  protocolName: 'Modbus_TCP',
   dataType: '二进制变量',
   dataValue: '',
 }
@@ -381,7 +381,7 @@ function renderModbus_TCPHTML (items = [], data = {}, type) {
       <div class="PBW-block" >
           <div class="PBW-block-item" >
             <span>数据区域</span>
-            <select onchange="changeModule_TCPData(event, 'dataArea', '${type}')" >
+            <select onchange="changeModbus_TCPData(event, 'dataArea', '${type}')" >
               <option value="线圈状态" ${data.dataArea === '线圈状态' ? 'selected' : ''} >线圈状态</option>
               <option value="离散输入状态" ${data.dataArea === '离散输入状态' ? 'selected' : ''} >离散输入状态</option>
               <option value="输入寄存器" ${data.dataArea === '输入寄存器' ? 'selected' : ''} >输入寄存器</option>
@@ -395,7 +395,7 @@ function renderModbus_TCPHTML (items = [], data = {}, type) {
         <div class="PBW-block" >
             <div class="PBW-block-item" >
               <span>数据区域</span>
-              <select onchange="changeModule_TCPData(event, 'dataArea', '${type}')" >
+              <select onchange="changeModbus_TCPData(event, 'dataArea', '${type}')" >
                 <option value="输入寄存器" ${data.dataArea === '输入寄存器' ? 'selected' : ''} >输入寄存器</option>
                 <option value="保持寄存器" ${data.dataArea === '保持寄存器' ? 'selected' : ''} >保持寄存器</option>
               </select>
@@ -420,7 +420,7 @@ function renderModbus_TCPHTML (items = [], data = {}, type) {
       <div class="PBW-block" >
         <div class="PBW-block-item">
           <span>位</span>
-          <select onchange="changeModule_TCPData(event, 'bit', '${type}')">
+          <select onchange="changeModbus_TCPData(event, 'bit', '${type}')">
             <option value="0" ${data.bit === '0' ? 'selected' : ''} >0</option>
             <option value="1" ${data.bit === '1' ? 'selected' : ''} >1</option>
             <option value="2" ${data.bit === '2' ? 'selected' : ''} >2</option>
@@ -853,7 +853,7 @@ function changeData (e, prop, type) {
 }
 
 // 选择下拉内容 -- Modbus_TCP协议
-function changeModule_TCPData (e, prop, type) {
+function changeModbus_TCPData (e, prop, type) {
   let types = ['有符号8位整型','有符号16位整型','有符号32位整型','有符号64位整型','无符号8位整型','无符号16位整型','无符号32位整型','无符号64位整型','F32位浮点数IEEE754','F64位浮点数IEEE754']
   formData[prop] = e.target.value
   if (type === '二进制变量') {
