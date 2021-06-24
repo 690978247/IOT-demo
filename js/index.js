@@ -3,7 +3,7 @@
 // 协议名称： S7_TCP   Modbus_TCP  OPC_DA  OPC_UA  MC3E_Binary_Etherent  MCA1E_Binary_Etherent  Fins_TCP
 var popupData = {
   protocolName: 'Modbus_TCP',
-  dataType: '二进制变量',
+  dataType: '有符号8位整型',
   dataValue: '',
 }
 
@@ -228,6 +228,29 @@ function confirmPop () {
         popupData.dataValue = `${addressData.dataArea + addressData.DBNum}.DBB${addressData.addressOffset}`
       } else if (addressData.addressType === '字') {
         popupData.dataValue = `${addressData.dataArea + addressData.DBNum}.DBW${addressData.addressOffset}`
+      }
+    }
+  } else if (popupData.protocolName === 'Modbus_TCP') {
+    // 1. 数据区域  2. 偏移地址   3.位  4. 长度
+    if (arrayEqual(addressData.showList, [1,2]) || arrayEqual(addressData.showList, [1,2,4])) {
+      if (addressData.dataArea === '线圈状态') {
+        popupData.dataValue = `00000${addressData.address}`
+      } else if (addressData.dataArea === '离散输入状态') {
+        popupData.dataValue = `10000${addressData.address}`
+      } else if (addressData.dataArea === '输入寄存器') {
+        popupData.dataValue = `30000${addressData.address}`
+      } else if (addressData.dataArea === '保持寄存器') {
+        popupData.dataValue = `40000${addressData.address}`
+      }
+    } else if (arrayEqual(addressData.showList, [1,2,3])) {
+      if (addressData.dataArea === '线圈状态') {
+        popupData.dataValue = `00000${addressData.address}.${addressData.bit}`
+      } else if (addressData.dataArea === '离散输入状态') {
+        popupData.dataValue = `10000${addressData.address}.${addressData.bit}`
+      } else if (addressData.dataArea === '输入寄存器') {
+        popupData.dataValue = `30000${addressData.address}.${addressData.bit}`
+      } else if (addressData.dataArea === '保持寄存器') {
+        popupData.dataValue = `40000${addressData.address}.${addressData.bit}`
       }
     }
   }
