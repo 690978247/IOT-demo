@@ -3,7 +3,7 @@
 // 协议名称： S7_TCP   Modbus_TCP  OPC_DA  OPC_UA  MC3E_Binary_Etherent  MCA1E_Binary_Etherent  Fins_TCP
 var popupData = {
   protocolName: 'S7_TCP',
-  dataType: '字符串',
+  dataType: '二进制变量',
   dataValue: '',
 }
 
@@ -29,6 +29,16 @@ var formData = JSON.parse(JSON.stringify(addressData))
 
 
 /* 方法 */
+function handleBlur (e) {
+  /* 输入框回显 */
+  if (popupData.protocolName === 'S7_TCP') {
+      if (popupData.dataType === '二进制变量') {
+
+      }
+  }
+}
+
+
 // 打开变量弹窗
 function openPop() {
   let pop = document.getElementById('popup')
@@ -905,7 +915,7 @@ function changeMABEData (e, prop, type) {
 }
 
 // 选择下拉内容 -- Fins_TCP协议
-function changeFins_TCPData(e, prop, type) {
+function changeFins_TCPData (e, prop, type) {
   formData[prop] = e.target.value
   if (type === '二进制变量') {
     if (e.target.value === 'TIM/CNT(Complettion Flag)') {
