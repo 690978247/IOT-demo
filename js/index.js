@@ -59,10 +59,12 @@ function openPop() {
     if (popupData.dataType === '二进制变量') {
       formData.showList = formData.showList.length === 0 ?  [1,2] : formData.showList
     }  else if (types.includes(popupData.dataType)) {
+      // 此处判断赋默认值还是回显值
       let areas = ['输入寄存器', '保持寄存器']
       formData.dataArea = areas.includes(formData.dataArea) ? formData.dataArea : '输入寄存器'
       formData.showList = formData.showList.length === 0 ?  [1,2] : formData.showList
     } else if (popupData.dataType === '字符串') {
+      // 此处判断赋默认值还是回显值
       let areas = ['输入寄存器', '保持寄存器']
       formData.dataArea = areas.includes(formData.dataArea) ? formData.dataArea : '输入寄存器'
       formData.showList = formData.showList.length === 0 ?  [1,2,4] : formData.showList
