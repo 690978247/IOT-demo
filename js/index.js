@@ -3,7 +3,8 @@
 // 协议名称： S7_TCP   Modbus_TCP  OPC_DA  OPC_UA  MC3E_Binary_Etherent  MCA1E_Binary_Etherent  Fins_TCP
 var popupData = {
   protocolName: 'S7_TCP',
-  dataType: '二进制变量'
+  dataType: '二进制变量',
+  dataValue: '',
 }
 
 // 定义一个提交的数据结构， 用来填写默认值与回显
@@ -132,8 +133,19 @@ function closePop () {
 
 // 提交弹窗
 function confirmPop () {
+  // 协议名称： S7_TCP   Modbus_TCP  OPC_DA  OPC_UA  MC3E_Binary_Etherent  MCA1E_Binary_Etherent  Fins_TCP
   addressData = JSON.parse(JSON.stringify(formData))
   console.log(addressData)
+  let input = document.getElementById('address-input')
+
+  if (popupData.protocolName === 'S7_TCP') {
+    // 1: 数据区域  2. 寄存器字母块（M/DBX/I/Q/MB/DBB/IB/QB/MW/DBW/IW/QW/MD/DBD/ID/QD） 3.  DB号  4. 地址偏移量   5. 位   6. 长度   7.  地址类型 
+   if (addressData.showList === [1,2,5]) {
+   }
+  }
+  
+  console.log(popupData)
+  input.value = popupData.dataValue
   closePop()
 }
 
