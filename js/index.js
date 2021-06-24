@@ -3,7 +3,7 @@
 // 协议名称： S7_TCP   Modbus_TCP  OPC_DA  OPC_UA  MC3E_Binary_Etherent  MCA1E_Binary_Etherent  Fins_TCP
 var popupData = {
   protocolName: 'MC3E_Binary_Etherent',
-  dataType: '二进制变量'
+  dataType: '字符串'
 }
 
 // 定义一个提交的数据结构， 用来填写默认值与回显
@@ -79,8 +79,14 @@ function openPop() {
     if (popupData.dataType === '二进制变量') {
       formData.showList = formData.showList.length === 0 ?  [1,2] : formData.showList
     } else if (popupData.dataType === '字符串') {
+       // 此处判断赋默认值还是回显值
+       let areas = ['数据寄存器（D）', '链接寄存器（W）', '定时器（当前值）（TN）', '计数器（当前值）（CN）']
+       formData.dataArea = areas.includes(formData.dataArea) ? formData.dataArea : '数据寄存器（D）'
       formData.showList = formData.showList.length === 0 ?  [1,2,4] : formData.showList
     } else {
+      // 此处判断赋默认值还是回显值
+      let areas = ['数据寄存器（D）', '链接寄存器（W）', '定时器（当前值）（TN）', '计数器（当前值）（CN）']
+      formData.dataArea = areas.includes(formData.dataArea) ? formData.dataArea : '数据寄存器（D）'
       formData.showList = formData.showList.length === 0 ?  [1,2] : formData.showList
     }
     renderMBEHTML(formData.showList, formData, popupData.dataType)
@@ -98,8 +104,8 @@ function closePop () {
 
 // 提交弹窗
 function confirmPop () {
-  console.log(addressData)
   addressData = JSON.parse(JSON.stringify(formData))
+  console.log(addressData)
   closePop()
 }
 
