@@ -2,8 +2,8 @@
 /* 定义变量 */
 // 协议名称： S7_TCP   Modbus_TCP  OPC_DA  OPC_UA  MC3E_Binary_Etherent  MCA1E_Binary_Etherent  Fins_TCP
 var popupData = {
-  protocolName: 'Fins_TCP',
-  dataType: '有符号8位整型'
+  protocolName: 'S7_TCP',
+  dataType: '二进制变量'
 }
 
 // 定义一个提交的数据结构， 用来填写默认值与回显
@@ -106,7 +106,7 @@ function openPop() {
       formData.showList = formData.showList.length === 0 ?  [1,2] : formData.showList
     }
     renderMABEHTML(formData.showList, formData, popupData.dataType)
-  } else if (popupData.protocolName === 'Fins_TCP') {
+  } else if (popupData.protocolName === 'Fins_TCP') { //  渲染 Fins_TCP 弹窗
     formData.dataArea = formData.dataArea ? formData.dataArea : 'CIO'
     if (popupData.dataType === '二进制变量') {
       formData.showList = formData.showList.length === 0 ?  [1,2,3] : formData.showList
@@ -117,8 +117,9 @@ function openPop() {
     }
 
     renderFins_TCPHTML(formData.showList, formData, popupData.dataType)
+  } else if (popupData.protocolName === 'OPC_DA' || popupData.protocolName === 'OPC_UA') {
+    renderOPCHTML(formData.showList, formData, popupData.dataType)
   }
-
 
 }
 
@@ -612,6 +613,11 @@ if (items.includes(4)) {
   `.trim()
 }
 wrap.innerHTML = html
+}
+
+// OPC DA协议、PC UA协议 弹窗渲染函数
+function renderOPCHTML(items = [], data = {}, type) {
+
 }
 
 // 选择下拉内容 -- S7_TCP协议
