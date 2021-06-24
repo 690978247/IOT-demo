@@ -3,7 +3,7 @@
 // 协议名称： S7_TCP   Modbus_TCP  OPC_DA  OPC_UA  MC3E_Binary_Etherent  MCA1E_Binary_Etherent  Fins_TCP
 var popupData = {
   protocolName: 'S7_TCP',
-  dataType: '有符号64位整型',
+  dataType: '字符串',
   dataValue: '',
 }
 
@@ -141,17 +141,85 @@ function confirmPop () {
   if (popupData.protocolName === 'S7_TCP') {
     // 1: 数据区域  2. 寄存器字母块（M/DBX/I/Q/MB/DBB/IB/QB/MW/DBW/IW/QW/MD/DBD/ID/QD） 3.  DB号  4. 地址偏移量   5. 位   6. 长度   7.  地址类型 
     /* 根据showList中的代码块  处理生成的变量 */
-   if (arrayEqual(addressData.showList, [1,2,5])) {
-    popupData.dataValue = `${addressData.letters + addressData.lettleValue}.${addressData.bit}` 
-   } else if (arrayEqual(addressData.showList, [1,2,3,5])) {
-    popupData.dataValue = `${addressData.dataArea + addressData.DBNum}.${addressData.letters + addressData.lettleValue}.${addressData.bit}`
-   } else if (arrayEqual(addressData.showList, [1,2])) {
-    popupData.dataValue = `${addressData.letters + addressData.lettleValue}`
-   } else if (arrayEqual(addressData.showList, [1,2,3])) {
-    popupData.dataValue = `${addressData.dataArea + addressData.DBNum}.${addressData.letters + addressData.lettleValue}`
-   } else if (arrayEqual(addressData.showList, [1,4,7])) {
-    
-   }
+    if (arrayEqual(addressData.showList, [1,2,5])) {
+      popupData.dataValue = `${addressData.letters + addressData.lettleValue}.${addressData.bit}` 
+    } else if (arrayEqual(addressData.showList, [1,2,3,5])) {
+      popupData.dataValue = `${addressData.dataArea + addressData.DBNum}.${addressData.letters + addressData.lettleValue}.${addressData.bit}`
+    } else if (arrayEqual(addressData.showList, [1,2])) {
+      popupData.dataValue = `${addressData.letters + addressData.lettleValue}`
+    } else if (arrayEqual(addressData.showList, [1,2,3])) {
+      popupData.dataValue = `${addressData.dataArea + addressData.DBNum}.${addressData.letters + addressData.lettleValue}`
+    } else if (arrayEqual(addressData.showList, [1,4,7])) {
+      if (addressData.dataArea === '位') {
+        if (addressData.addressType === '字节') {
+          popupData.dataValue = `MB${addressData.addressOffset}`
+        } else if (addressData.addressType === '字') {
+          popupData.dataValue = `MW${addressData.addressOffset}`
+        } else if (addressData.addressType === '双字'){
+          popupData.dataValue = `MD${addressData.addressOffset}`
+        }
+      } else if (addressData.dataArea === '输入') {
+        if (addressData.addressType === '字节') {
+          popupData.dataValue = `IB${addressData.addressOffset}`
+        } else if (addressData.addressType === '字') {
+          popupData.dataValue = `IW${addressData.addressOffset}`
+        } else if (addressData.addressType === '双字'){
+          popupData.dataValue = `ID${addressData.addressOffset}`
+        }
+      } else if (addressData.dataArea === '输出') {
+        if (addressData.addressType === '字节') {
+          popupData.dataValue = `QB${addressData.addressOffset}`
+        } else if (addressData.addressType === '字') {
+          popupData.dataValue = `QW${addressData.addressOffset}`
+        } else if (addressData.addressType === '双字'){
+          popupData.dataValue = `QD${addressData.addressOffset}`
+        }
+      }
+    } else if (arrayEqual(addressData.showList, [1,3,4,7])) {
+      if (addressData.addressType === '字节') {
+        popupData.dataValue = `${addressData.dataArea + addressData.DBNum}.DBB${addressData.addressOffset}`
+      } else if (addressData.addressType === '字') {
+        popupData.dataValue = `${addressData.dataArea + addressData.DBNum}.DBW${addressData.addressOffset}`
+      } else if (addressData.addressType === '双字'){
+        popupData.dataValue = `${addressData.dataArea + addressData.DBNum}.DBD${addressData.addressOffset}`
+      }
+    } else if (arrayEqual(addressData.showList, [1,4,6])) {
+      if (addressData.dataArea === '位') {
+        popupData.dataValue = `MB${addressData.addressOffset}`
+      } else if (addressData.dataArea === '输入') {
+        popupData.dataValue = `IB${addressData.addressOffset}`
+      } else if (addressData.dataArea === '输出') {
+        popupData.dataValue = `QB${addressData.addressOffset}`
+      }
+    } else if (arrayEqual(addressData.showList, [1,3,4,6])) {
+      popupData.dataValue = `${addressData.dataArea + addressData.DBNum}.DBB${addressData.addressOffset}`
+    } else if (arrayEqual(addressData.showList, [1,4,6,7])) {
+      if (addressData.dataArea === '位') {
+        if (addressData.addressType === '字节') {
+          popupData.dataValue = `MB${addressData.addressOffset}`
+        } else if (addressData.addressType === '字') {
+          popupData.dataValue = `MW${addressData.addressOffset}`
+        }
+      } else if (addressData.dataArea === '输入') {
+        if (addressData.addressType === '字节') {
+          popupData.dataValue = `IB${addressData.addressOffset}`
+        } else if (addressData.addressType === '字') {
+          popupData.dataValue = `IW${addressData.addressOffset}`
+        }
+      } else if (addressData.dataArea === '输出') {
+        if (addressData.addressType === '字节') {
+          popupData.dataValue = `QB${addressData.addressOffset}`
+        } else if (addressData.addressType === '字') {
+          popupData.dataValue = `QW${addressData.addressOffset}`
+        }
+      }
+    } else if (arrayEqual(addressData.showList, [1,3,4,6,7])) {
+      if (addressData.addressType === '字节') {
+        popupData.dataValue = `${addressData.dataArea + addressData.DBNum}.DBB${addressData.addressOffset}`
+      } else if (addressData.addressType === '字') {
+        popupData.dataValue = `${addressData.dataArea + addressData.DBNum}.DBW${addressData.addressOffset}`
+      }
+    }
   }
   
   console.log(popupData)
@@ -255,18 +323,33 @@ function renderS7_TCPHTML(items = [], data = {}, type) {
   }
 
   if (items.includes(7)) {
-    html += `
-      <div class="PBW-block" >
-        <div class="PBW-block-item">
-          <span>地址类型</span>
-          <select onchange="changeData(event, 'addressType', '${type}')">
-            <option value="字节" ${data.addressType === '字节' ? 'selected' : ''} >字节</option>
-            <option value="字" ${data.addressType === '字' ? 'selected' : ''} >字</option>
-            <option value="双字" ${data.addressType === '双字' ? 'selected' : ''} >双字</option>
-          </select>
+    let types = ['字符串', '宽字符串']
+    if(types.includes(type)) {
+      html += `
+        <div class="PBW-block" >
+          <div class="PBW-block-item">
+            <span>地址类型</span>
+            <select onchange="changeData(event, 'addressType', '${type}')">
+              <option value="字节" ${data.addressType === '字节' ? 'selected' : ''} >字节</option>
+              <option value="字" ${data.addressType === '字' ? 'selected' : ''} >字</option>
+            </select>
+          </div>
         </div>
-      </div>
-    `.trim()
+      `.trim()
+    } else {
+      html += `
+        <div class="PBW-block" >
+          <div class="PBW-block-item">
+            <span>地址类型</span>
+            <select onchange="changeData(event, 'addressType', '${type}')">
+              <option value="字节" ${data.addressType === '字节' ? 'selected' : ''} >字节</option>
+              <option value="字" ${data.addressType === '字' ? 'selected' : ''} >字</option>
+              <option value="双字" ${data.addressType === '双字' ? 'selected' : ''} >双字</option>
+            </select>
+          </div>
+        </div>
+      `.trim()
+    }
   }
 
  wrap.innerHTML = html
