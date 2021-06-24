@@ -2,8 +2,8 @@
 /* 定义变量 */
 // 协议名称： S7_TCP   Modbus_TCP  OPC_DA  OPC_UA  MC3E_Binary_Etherent  MCA1E_Binary_Etherent  Fins_TCP
 var popupData = {
-  protocolName: 'MCA1E_Binary_Etherent',
-  dataType: '字符串'
+  protocolName: 'Fins_TCP',
+  dataType: '有符号8位整型'
 }
 
 // 定义一个提交的数据结构， 用来填写默认值与回显
@@ -106,6 +106,17 @@ function openPop() {
       formData.showList = formData.showList.length === 0 ?  [1,2] : formData.showList
     }
     renderMABEHTML(formData.showList, formData, popupData.dataType)
+  } else if (popupData.protocolName === 'Fins_TCP') {
+    formData.dataArea = formData.dataArea ? formData.dataArea : 'CIO'
+    if (popupData.dataType === '二进制变量') {
+      formData.showList = formData.showList.length === 0 ?  [1,2,3] : formData.showList
+    } else if (popupData.dataType === '字符串') {
+      formData.showList = formData.showList.length === 0 ?  [1,2,4] : formData.showList
+    } else {
+      formData.showList = formData.showList.length === 0 ?  [1,2] : formData.showList
+    }
+
+    renderFins_TCPHTML(formData.showList, formData, popupData.dataType)
   }
 
 
@@ -511,6 +522,98 @@ function renderMABEHTML(items = [], data = {}, type) {
   wrap.innerHTML = html
 }
 
+// Fins_TCP协议 弹窗渲染函数
+function renderFins_TCPHTML(items = [], data = {}, type) {
+   // 1. 数据区域    2.  地址    3.  位    4. 长度
+   let wrap = document.getElementById('popup-body-wrap')
+   let html = ``
+   if (items.includes(1)) {
+    let binaryarea = ['CIO','WR','HR','AR','TIM/CNT(Complettion Flag)','DM','EM current bank','EM bank 0','EM bank 1','EM bank 2','EM bank 3','EM bank 4','EM bank 5','EM bank 6','EM bank 7','EM bank 8','EM bank 9','EM bank A','EM bank B','EM bank C','EM bank D','EM bank E','EM bank F','EM bank 10','EM bank 11','EM bank 12','EM bank 13','EM bank 14','EM bank 15','EM bank 16','EM bank 17','EM bank 18'] 
+     if (type === '二进制变量') {
+        let str = ``
+        binaryarea.forEach(item => {
+          str +=  `<option value="${item}" ${data.dataArea === item ? 'selected' : ''} >${item}</option>`
+        })
+        html +=`
+        <div class="PBW-block" >
+            <div class="PBW-block-item" >
+              <span>数据区域</span>
+              <select onchange="changeFins_TCPData(event, 'dataArea', '${type}')" >
+                ${str}
+              </select>
+            </div>
+        </div>
+        `.trim()
+      } else {
+        let str = ``
+        binaryarea.filter(f => f !== 'TIM/CNT(Complettion Flag)').forEach(item => {
+          str +=  `<option value="${item}" ${data.dataArea === item ? 'selected' : ''} >${item}</option>`
+        })
+        html +=`
+        <div class="PBW-block" >
+            <div class="PBW-block-item" >
+              <span>数据区域</span>
+              <select onchange="changeFins_TCPData(event, 'dataArea', '${type}')" >
+                ${str}
+              </select>
+            </div>
+        </div>
+        `.trim()
+      }
+}
+
+if (items.includes(2)) {
+  html += `
+    <div class="PBW-block" >
+      <div class="PBW-block-item">
+        <span>偏移地址</span>
+        <input type="number" min="0" value="${data.address}" onblur="blurData(event, 'address')" >
+      </div>
+    </div>
+  `.trim()
+}
+
+if (items.includes(3)) {
+  html += `
+    <div class="PBW-block" >
+      <div class="PBW-block-item">
+        <span>位</span>
+        <select onchange="changeFins_TCPData(event, 'bit', '${type}')">
+          <option value="0" ${data.bit === '0' ? 'selected' : ''} >0</option>
+          <option value="1" ${data.bit === '1' ? 'selected' : ''} >1</option>
+          <option value="2" ${data.bit === '2' ? 'selected' : ''} >2</option>
+          <option value="3" ${data.bit === '3' ? 'selected' : ''} >3</option>
+          <option value="4" ${data.bit === '4' ? 'selected' : ''} >4</option>
+          <option value="5" ${data.bit === '5' ? 'selected' : ''} >5</option>
+          <option value="6" ${data.bit === '6' ? 'selected' : ''} >6</option>
+          <option value="7" ${data.bit === '7' ? 'selected' : ''} >7</option>
+          <option value="8" ${data.bit === '8' ? 'selected' : ''} >8</option>
+          <option value="9" ${data.bit === '9' ? 'selected' : ''} >9</option>
+          <option value="A" ${data.bit === 'A' ? 'selected' : ''} >A</option>
+          <option value="B" ${data.bit === 'B' ? 'selected' : ''} >B</option>
+          <option value="C" ${data.bit === 'C' ? 'selected' : ''} >C</option>
+          <option value="D" ${data.bit === 'D' ? 'selected' : ''} >D</option>
+          <option value="E" ${data.bit === 'E' ? 'selected' : ''} >E</option>
+          <option value="F" ${data.bit === 'F' ? 'selected' : ''} >F</option>
+        </select>
+      </div>
+    </div>
+  `.trim()
+}
+
+if (items.includes(4)) {
+  html += `
+    <div class="PBW-block" >
+      <div class="PBW-block-item">
+        <span>长度</span>
+        <input type="number" min="1" max="255" value="${data.len}" onblur="blurData(event, 'len')" >
+      </div>
+    </div>
+  `.trim()
+}
+wrap.innerHTML = html
+}
+
 // 选择下拉内容 -- S7_TCP协议
 function changeData (e, prop, type) {
   formData[prop] = e.target.value
@@ -663,7 +766,7 @@ function changeMBEData (e, prop, type) {
   renderMBEHTML(formData.showList, formData, type)
 }
 
-// 选择下拉内容 -- MC3E_Binary_Etherent协议
+// 选择下拉内容 -- MCA1E_Binary_Etherent协议
 function changeMABEData (e, prop, type) {
   formData[prop] = e.target.value
   if (type === '二进制变量') {
@@ -678,6 +781,20 @@ function changeMABEData (e, prop, type) {
   }
 
   renderMABEHTML(formData.showList, formData, type)
+}
+
+// 选择下拉内容 -- Fins_TCP协议
+function changeFins_TCPData(e, prop, type) {
+  formData[prop] = e.target.value
+  if (type === '二进制变量') {
+    if (e.target.value === 'TIM/CNT(Complettion Flag)') {
+      formData.showList = [1,2]
+    } else {
+      formData.showList = [1,2,3]
+    }
+  }
+
+  renderFins_TCPHTML(formData.showList, formData, type)
 }
 
 function blurData (e, prop) {
