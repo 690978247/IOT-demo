@@ -2,8 +2,8 @@
 /* 定义变量 */
 // 协议名称： S7_TCP   Modbus_TCP  OPC_DA  OPC_UA  MC3E_Binary_Etherent  MCA1E_Binary_Etherent  Fins_TCP
 var popupData = {
-  protocolName: 'Modbus_TCP',
-  dataType: '有符号8位整型',
+  protocolName: 'MC3E_Binary_Etherent',
+  dataType: '二进制变量',
   dataValue: '',
 }
 
@@ -253,6 +253,59 @@ function confirmPop () {
         popupData.dataValue = `40000${addressData.address}.${addressData.bit}`
       }
     }
+  } else if (popupData.protocolName === 'MC3E_Binary_Etherent') {
+    // 1. 数据区域    2.  地址    3.  位    4. 长度
+    if (arrayEqual(addressData.showList, [1,2]) || arrayEqual(addressData.showList, [1,2,4])) {
+      if (addressData.dataArea === '输入寄存器（X）') {
+        popupData.dataValue = `X${addressData.address}`
+      } else if (addressData.dataArea === '输出寄存器（Y）') {
+        popupData.dataValue = `Y${addressData.address}`
+      } else if (addressData.dataArea === '内部继电器（M）') {
+        popupData.dataValue = `M${addressData.address}`
+      } else if (addressData.dataArea === '定时器（触点）（TS）') {
+        popupData.dataValue = `TS${addressData.address}`
+      } else if (addressData.dataArea === '定时器（线圈）（TC）') {
+        popupData.dataValue = `TC${addressData.address}`
+      } else if (addressData.dataArea === '计数器（触点）（CS）') {
+        popupData.dataValue = `CS${addressData.address}`
+      } else if (addressData.dataArea === '计数器（线圈）（CC）') {
+        popupData.dataValue = `CC${addressData.address}`
+      } else if (addressData.dataArea === '数据寄存器（D）') {
+        popupData.dataValue = `D${addressData.address}`
+      } else if (addressData.dataArea === '链接寄存器（W）') {
+        popupData.dataValue = `W${addressData.address}`
+      } else if (addressData.dataArea === '定时器（当前值）（TN）') {
+        popupData.dataValue = `TN${addressData.address}`
+      } else if (addressData.dataArea === '计数器（当前值）（CN）') {
+        popupData.dataValue = `CN${addressData.address}`
+      }
+    } else if (arrayEqual(addressData.showList, [1,2,3])) {
+      if (addressData.dataArea === '输入寄存器（X）') {
+        popupData.dataValue = `X${addressData.address}.${addressData.bit}`
+      } else if (addressData.dataArea === '输出寄存器（Y）') {
+        popupData.dataValue = `Y${addressData.address}.${addressData.bit}`
+      } else if (addressData.dataArea === '内部继电器（M）') {
+        popupData.dataValue = `M${addressData.address}.${addressData.bit}`
+      } else if (addressData.dataArea === '定时器（触点）（TS）') {
+        popupData.dataValue = `TS${addressData.address}.${addressData.bit}`
+      } else if (addressData.dataArea === '定时器（线圈）（TC）') {
+        popupData.dataValue = `TC${addressData.address}.${addressData.bit}`
+      } else if (addressData.dataArea === '计数器（触点）（CS）') {
+        popupData.dataValue = `CS${addressData.address}.${addressData.bit}`
+      } else if (addressData.dataArea === '计数器（线圈）（CC）') {
+        popupData.dataValue = `CC${addressData.address}.${addressData.bit}`
+      } else if (addressData.dataArea === '数据寄存器（D）') {
+        popupData.dataValue = `D${addressData.address}.${addressData.bit}`
+      } else if (addressData.dataArea === '链接寄存器（W）') {
+        popupData.dataValue = `W${addressData.address}.${addressData.bit}`
+      } else if (addressData.dataArea === '定时器（当前值）（TN）') {
+        popupData.dataValue = `TN${addressData.address}.${addressData.bit}`
+      } else if (addressData.dataArea === '计数器（当前值）（CN）') {
+        popupData.dataValue = `CN${addressData.address}.${addressData.bit}`
+      }
+    }
+    
+
   }
   
   console.log(popupData)
