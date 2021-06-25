@@ -2,8 +2,8 @@
 /* 定义变量 */
 // 协议名称： S7_TCP   Modbus_TCP  OPC_DA  OPC_UA  MC3E_Binary_Etherent  MCA1E_Binary_Etherent  Fins_TCP
 var popupData = {
-  protocolName: 'MCA1E_Binary_Etherent',
-  dataType: '有符号8位整型',
+  protocolName: 'MC3E_Binary_Etherent',
+  dataType: '字符串',
   dataValue: '',  // 变量地址
   dataLen: '4',  // 字符长度
 }
@@ -526,22 +526,22 @@ function handleBlur (e) {
       } else if (TSReg.test(popupData.dataValue)) {
         let arr =  popupData.dataValue.match(TSReg) 
         addressData.dataArea = '定时器（触点）（TS）'
-        addressData.address = parseInt(arr[1])
+        addressData.address = parseInt(arr[2])
         addressData.showList = [1,2]
       } else if (TCReg.test(popupData.dataValue)) {
         let arr =  popupData.dataValue.match(TCReg) 
         addressData.dataArea = '定时器（线圈）（TC）'
-        addressData.address = parseInt(arr[1])
+        addressData.address = parseInt(arr[2])
         addressData.showList = [1,2]
       } else if (CSReg.test(popupData.dataValue)) {
         let arr =  popupData.dataValue.match(CSReg) 
         addressData.dataArea = '计数器（触点）（CS）'
-        addressData.address = parseInt(arr[1])
+        addressData.address = parseInt(arr[2])
         addressData.showList = [1,2]
       } else if (CCReg.test(popupData.dataValue)) {
         let arr =  popupData.dataValue.match(CCReg) 
         addressData.dataArea = '计数器（线圈）（CC）'
-        addressData.address = parseInt(arr[1])
+        addressData.address = parseInt(arr[2])
         addressData.showList = [1,2]
       } else if (DReg.test(popupData.dataValue)) {
         let arr =  popupData.dataValue.match(DReg) 
@@ -558,14 +558,14 @@ function handleBlur (e) {
       } else if (TNReg.test(popupData.dataValue)) {
         let arr =  popupData.dataValue.match(TNReg) 
         addressData.dataArea = '定时器（当前值）（TN）'
-        addressData.address = parseInt(arr[1])
-        addressData.bit = arr[3]
+        addressData.address = parseInt(arr[2])
+        addressData.bit = arr[4]
         addressData.showList = [1,2,3]
       } else if (CNReg.test(popupData.dataValue)) {
         let arr =  popupData.dataValue.match(CNReg) 
         addressData.dataArea = '计数器（当前值）（CN）'
-        addressData.address = parseInt(arr[1])
-        addressData.bit = arr[3]
+        addressData.address = parseInt(arr[2])
+        addressData.bit = arr[4]
         addressData.showList = [1,2,3]
       } else {
         e.target.value = ''
