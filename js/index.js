@@ -2,8 +2,8 @@
 /* 定义变量 */
 // 协议名称： S7_TCP   Modbus_TCP  OPC_DA  OPC_UA  MC3E_Binary_Etherent  MCA1E_Binary_Etherent  Fins_TCP
 var popupData = {
-  protocolName: 'S7_TCP',
-  dataType: '字符串',
+  protocolName: 'Modbus_TCP',
+  dataType: '二进制变量',
   dataValue: '',  // 变量地址
   dataLen: '4',  // 字符长度
 }
@@ -402,6 +402,17 @@ function handleBlur (e) {
 
       }
       formData = JSON.parse(JSON.stringify(addressData))
+  } else if (popupData.protocolName === 'Modbus_TCP') {
+    // 1. 数据区域  2. 偏移地址   3.位  4. 长度
+    if (popupData.dataType === '二进制变量') {
+      let coilReg = /^[0]([0]{4})$/     // 线圈状态匹配正则
+      let dIReg = /^(DB)([1-9]{1,})([.]{1})((DBX){1})([0-9]{1,})([.]{1})([0-7]{1,})$/ // 离散输入匹配正则
+      let IReg = /^[I]([0-9]{1,})([.]{1})([0-7]{1})$/ // 输入寄存器正则
+      let KReg = /^[Q]([0-9]{1,})([.]{1})([0-7]{1})$/ // 保持寄存器正则
+
+
+
+    }
   }
 }
 
@@ -603,23 +614,23 @@ function confirmPop () {
     // 1. 数据区域  2. 偏移地址   3.位  4. 长度
     if (arrayEqual(addressData.showList, [1,2]) || arrayEqual(addressData.showList, [1,2,4])) {
       if (addressData.dataArea === '线圈状态') {
-        popupData.dataValue = `00000${addressData.address}`
+        popupData.dataValue = `0${addressData.address.toString().padStart(5, '0')}`
       } else if (addressData.dataArea === '离散输入状态') {
-        popupData.dataValue = `10000${addressData.address}`
+        popupData.dataValue = `1${addressData.address.toString().padStart(5, '0')}`
       } else if (addressData.dataArea === '输入寄存器') {
-        popupData.dataValue = `30000${addressData.address}`
+        popupData.dataValue = `3${addressData.address.toString().padStart(5, '0')}`
       } else if (addressData.dataArea === '保持寄存器') {
-        popupData.dataValue = `40000${addressData.address}`
+        popupData.dataValue = `4${addressData.address.toString().padStart(5, '0')}`
       }
     } else if (arrayEqual(addressData.showList, [1,2,3])) {
       if (addressData.dataArea === '线圈状态') {
-        popupData.dataValue = `00000${addressData.address}.${addressData.bit}`
+        popupData.dataValue = `0${addressData.address.toString().padStart(5, '0')}.${addressData.bit}`
       } else if (addressData.dataArea === '离散输入状态') {
-        popupData.dataValue = `10000${addressData.address}.${addressData.bit}`
+        popupData.dataValue = `1${addressData.address.toString().padStart(5, '0')}.${addressData.bit}`
       } else if (addressData.dataArea === '输入寄存器') {
-        popupData.dataValue = `30000${addressData.address}.${addressData.bit}`
+        popupData.dataValue = `3${addressData.address.toString().padStart(5, '0')}.${addressData.bit}`
       } else if (addressData.dataArea === '保持寄存器') {
-        popupData.dataValue = `40000${addressData.address}.${addressData.bit}`
+        popupData.dataValue = `4${addressData.address.toString().padStart(5, '0')}.${addressData.bit}`
       }
     }
   } else if (popupData.protocolName === 'MC3E_Binary_Etherent') {
@@ -901,7 +912,7 @@ function renderS7_TCPHTML(items = [], data = {}, type) {
       <div class="PBW-block" >
         <div class="PBW-block-item">
           <span>${data.letters}</span>
-          <input type="number" min="0" value="${data.lettleValue}" onblur="blurData(event, 'lettleValue')" >
+          <input type="number" min="0" value="${data.lettleValue}" onblur="blurData(event, 'lettleValue', 'S7_TCP')" >
         </div>
       </div>
     `.trim()
@@ -912,7 +923,7 @@ function renderS7_TCPHTML(items = [], data = {}, type) {
       <div class="PBW-block" >
         <div class="PBW-block-item">
           <span>DB号</span>
-          <input type="number" min="1" value="${data.DBNum}" onblur="blurData(event, 'DBNum')" >
+          <input type="number" min="1" value="${data.DBNum}" onblur="blurData(event, 'DBNum', 'S7_TCP')" >
         </div>
       </div>
     `.trim()
@@ -923,7 +934,7 @@ function renderS7_TCPHTML(items = [], data = {}, type) {
       <div class="PBW-block" >
         <div class="PBW-block-item">
           <span>地址偏移量</span>
-          <input type="number" min="1" value="${data.addressOffset}" onblur="blurData(event, 'addressOffset')" >
+          <input type="number" min="1" value="${data.addressOffset}" onblur="blurData(event, 'addressOffset', 'S7_TCP')" >
         </div>
       </div>
     `.trim()
@@ -954,7 +965,7 @@ function renderS7_TCPHTML(items = [], data = {}, type) {
       <div class="PBW-block" >
         <div class="PBW-block-item">
           <span>长度</span>
-          <input type="number" min="1" max="255" value="${data.len}" onblur="blurData(event, 'len')" >
+          <input type="number" min="1" max="255" value="${data.len}" onblur="blurData(event, 'len', 'S7_TCP')" >
         </div>
       </div>
     `.trim()
@@ -1037,7 +1048,7 @@ function renderModbus_TCPHTML (items = [], data = {}, type) {
       <div class="PBW-block" >
         <div class="PBW-block-item">
           <span>偏移地址</span>
-          <input type="number" min="0" value="${data.address}" onblur="blurData(event, 'address')" >
+          <input type="number" min="0" value="${data.address}" onblur="blurData(event, 'address', 'Modbus_TCP')" >
         </div>
       </div>
     `.trim()
@@ -1076,7 +1087,7 @@ function renderModbus_TCPHTML (items = [], data = {}, type) {
       <div class="PBW-block" >
         <div class="PBW-block-item">
           <span>长度</span>
-          <input type="number" min="1" max="255" value="${data.len}" onblur="blurData(event, 'len')" >
+          <input type="number" min="1" max="255" value="${data.len}" onblur="blurData(event, 'len', 'Modbus_TCP')" >
         </div>
       </div>
     `.trim()
@@ -1134,7 +1145,7 @@ function renderMBEHTML (items = [], data = {}, type) {
       <div class="PBW-block" >
         <div class="PBW-block-item">
           <span>偏移地址</span>
-          <input type="number" min="0" value="${data.address}" onblur="blurData(event, 'address')" >
+          <input type="number" min="0" value="${data.address}" onblur="blurData(event, 'address', 'MC3E_Binary_Etherent')" >
         </div>
       </div>
     `.trim()
@@ -1173,7 +1184,7 @@ function renderMBEHTML (items = [], data = {}, type) {
       <div class="PBW-block" >
         <div class="PBW-block-item">
           <span>长度</span>
-          <input type="number" min="1" max="255" value="${data.len}" onblur="blurData(event, 'len')" >
+          <input type="number" min="1" max="255" value="${data.len}" onblur="blurData(event, 'len', 'MC3E_Binary_Etherent')" >
         </div>
       </div>
     `.trim()
@@ -1229,7 +1240,7 @@ function renderMABEHTML(items = [], data = {}, type) {
       <div class="PBW-block" >
         <div class="PBW-block-item">
           <span>偏移地址</span>
-          <input type="number" min="0" value="${data.address}" onblur="blurData(event, 'address')" >
+          <input type="number" min="0" value="${data.address}" onblur="blurData(event, 'address', 'MCA1E_Binary_Etherent')" >
         </div>
       </div>
     `.trim()
@@ -1268,7 +1279,7 @@ function renderMABEHTML(items = [], data = {}, type) {
       <div class="PBW-block" >
         <div class="PBW-block-item">
           <span>长度</span>
-          <input type="number" min="1" max="255" value="${data.len}" onblur="blurData(event, 'len')" >
+          <input type="number" min="1" max="255" value="${data.len}" onblur="blurData(event, 'len', 'MCA1E_Binary_Etherent')" >
         </div>
       </div>
     `.trim()
@@ -1321,7 +1332,7 @@ if (items.includes(2)) {
     <div class="PBW-block" >
       <div class="PBW-block-item">
         <span>偏移地址</span>
-        <input type="number" min="0" value="${data.address}" onblur="blurData(event, 'address')" >
+        <input type="number" min="0" value="${data.address}" onblur="blurData(event, 'address', 'Fins_TCP')" >
       </div>
     </div>
   `.trim()
@@ -1360,7 +1371,7 @@ if (items.includes(4)) {
     <div class="PBW-block" >
       <div class="PBW-block-item">
         <span>长度</span>
-        <input type="number" min="1" max="255" value="${data.len}" onblur="blurData(event, 'len')" >
+        <input type="number" min="1" max="255" value="${data.len}" onblur="blurData(event, 'len', 'Fins_TCP')" >
       </div>
     </div>
   `.trim()
@@ -1556,7 +1567,7 @@ function changeFins_TCPData (e, prop, type) {
   renderFins_TCPHTML(formData.showList, formData, type)
 }
 
-function blurData (e, prop) {
+function blurData (e, prop, protocal) {
   let types = ['DBNum','addressOffset']
   if (prop === 'lettleValue') {
     // 必填，0或正整数；
@@ -1580,6 +1591,38 @@ function blurData (e, prop) {
       e.target.value = 1
     } else if (e.target.value >= 255) {
       e.target.value = 255
+    }
+  } else if (prop === 'address') {
+    if (protocal === 'Modbus_TCP') {
+      // 必填，1-65536的正整数；
+      if (!e.target.value) {
+        e.target.value = 1
+      } else if (e.target.value <= 1) {
+        e.target.value = 1
+      } else if (e.target.value >= 65536) {
+        e.target.value = 65536
+      }
+    } else if (protocal === 'MC3E_Binary_Etherent') {
+      // 必填，0或正整数，八进制格式；
+      if (!e.target.value) {
+        e.target.value = 0
+      } else if (e.target.value <= 0) {
+        e.target.value = 0
+      } 
+    } else if (protocal === 'MCA1E_Binary_Etherent') {
+      // 必填，正整数，八进制格式；
+      if (!e.target.value) {
+        e.target.value = 0
+      } else if (e.target.value <= 0) {
+        e.target.value = 0
+      } 
+    } else if (protocal === 'MCA1E_Binary_Etherent') {
+      // 必填，0或正整数；
+      if (!e.target.value) {
+        e.target.value = 0
+      } else if (e.target.value <= 0) {
+        e.target.value = 0
+      } 
     }
   }
   e.target.value = parseInt(e.target.value)
