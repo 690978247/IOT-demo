@@ -78,10 +78,10 @@ function handleBlur (e) {
   if (popupData.protocolName === 'S7_TCP') {
        // 1: 数据区域  2. 寄存器字母块（M/DBX/I/Q/MB/DBB/IB/QB/MW/DBW/IW/QW/MD/DBD/ID/QD） 3.  DB号  4. 地址偏移量   5. 位   6. 长度   7.  地址类型 
       if (popupData.dataType === '二进制变量') {
-        var bitReg = /^[M]([0-9]{1,})([.]{1})([0-7]{1})$/     // 位匹配正则
-        var dbReg = /^(DB)([1-9]{1,})([.]{1})((DBX){1})([0-9]{1,})([.]{1})([0-7]{1,})$/ // DB号匹配正则
-        var IReg = /^[I]([0-9]{1,})([.]{1})([0-7]{1})$/ // 输入匹配正则
-        var QReg = /^[Q]([0-9]{1,})([.]{1})([0-7]{1})$/ // 输出匹配正则
+        let bitReg = /^[M]([0-9]{1,})([.]{1})([0-7]{1})$/     // 位匹配正则
+        let dbReg = /^(DB)([1-9]{1,})([.]{1})((DBX){1})([0-9]{1,})([.]{1})([0-7]{1,})$/ // DB号匹配正则
+        let IReg = /^[I]([0-9]{1,})([.]{1})([0-7]{1})$/ // 输入匹配正则
+        let QReg = /^[Q]([0-9]{1,})([.]{1})([0-7]{1})$/ // 输出匹配正则
         if (bitReg.test(popupData.dataValue)) {
           let arr =  popupData.dataValue.match(bitReg) 
           addressData.dataArea = '位'
@@ -119,10 +119,10 @@ function handleBlur (e) {
           return
         }
       } else if (popupData.dataType === '有符号8位整型' || popupData.dataType === '无符号8位整型') {
-        var bitReg = /^(MB)([0-9]{1,})$/     // 位匹配正则
-        var dbReg = /^(DB)([1-9]{1,})([.]{1})((DBB){1})([0-9]{1,})$/ // DB号匹配正则
-        var IReg = /^(IB)([0-9]{1,})$/ // 输入匹配正则
-        var QReg = /^(QB)([0-9]{1,})$/ // 输出匹配正则
+        let bitReg = /^(MB)([0-9]{1,})$/     // 位匹配正则
+        let dbReg = /^(DB)([1-9]{1,})([.]{1})((DBB){1})([0-9]{1,})$/ // DB号匹配正则
+        let IReg = /^(IB)([0-9]{1,})$/ // 输入匹配正则
+        let QReg = /^(QB)([0-9]{1,})$/ // 输出匹配正则
 
         if (bitReg.test(popupData.dataValue)) {
           let arr =  popupData.dataValue.match(bitReg) 
@@ -158,10 +158,10 @@ function handleBlur (e) {
         }
 
       } else if (popupData.dataType === '有符号16位整型' || popupData.dataType === '无符号16位整型') {
-        var bitReg = /^(MW)([0-9]{1,})$/     // 位匹配正则
-        var dbReg = /^(DB)([1-9]{1,})([.]{1})((DBW){1})([0-9]{1,})$/ // DB号匹配正则
-        var IReg = /^(IW)([0-9]{1,})$/ // 输入匹配正则
-        var QReg = /^(QW)([0-9]{1,})$/ // 输出匹配正则
+        let bitReg = /^(MW)([0-9]{1,})$/     // 位匹配正则
+        let dbReg = /^(DB)([1-9]{1,})([.]{1})((DBW){1})([0-9]{1,})$/ // DB号匹配正则
+        let IReg = /^(IW)([0-9]{1,})$/ // 输入匹配正则
+        let QReg = /^(QW)([0-9]{1,})$/ // 输出匹配正则
 
         if (bitReg.test(popupData.dataValue)) {
           let arr =  popupData.dataValue.match(bitReg) 
@@ -198,10 +198,10 @@ function handleBlur (e) {
 
 
       } else if (popupData.dataType === '有符号32位整型' || popupData.dataType === '无符号32位整型' || popupData.dataType === 'F32位浮点数IEEE754' || popupData.dataType === '定时器') {
-        var bitReg = /^(MD)([0-9]{1,})$/     // 位匹配正则
-        var dbReg = /^(DB)([1-9]{1,})([.]{1})((DBD){1})([0-9]{1,})$/ // DB号匹配正则
-        var IReg = /^(ID)([0-9]{1,})$/ // 输入匹配正则
-        var QReg = /^(QD)([0-9]{1,})$/ // 输出匹配正则
+        let bitReg = /^(MD)([0-9]{1,})$/     // 位匹配正则
+        let dbReg = /^(DB)([1-9]{1,})([.]{1})((DBD){1})([0-9]{1,})$/ // DB号匹配正则
+        let IReg = /^(ID)([0-9]{1,})$/ // 输入匹配正则
+        let QReg = /^(QD)([0-9]{1,})$/ // 输出匹配正则
 
         if (bitReg.test(popupData.dataValue)) {
           let arr =  popupData.dataValue.match(bitReg) 
@@ -237,10 +237,10 @@ function handleBlur (e) {
         }
 
       } else if (popupData.dataType === '有符号64位整型' || popupData.dataType === '无符号64位整型' || popupData.dataType === 'F64位浮点数IEEE754' || popupData.dataType === '日期'|| popupData.dataType === '时间'|| popupData.dataType === '日期时间') {
-        var bitReg = /^(MB|MD|MW)([0-9]{1,})$/     // 位匹配正则
-        var dbReg = /^(DB)([1-9]{1,})([.]{1})((DBB|DBW|DBD){1})([0-9]{1,})$/ // DB号匹配正则
-        var IReg = /^(IB|IW|ID)([0-9]{1,})$/ // 输入匹配正则
-        var QReg = /^(QB|QW|QD)([0-9]{1,})$/ // 输出匹配正则
+        let bitReg = /^(MB|MD|MW)([0-9]{1,})$/     // 位匹配正则
+        let dbReg = /^(DB)([1-9]{1,})([.]{1})((DBB|DBW|DBD){1})([0-9]{1,})$/ // DB号匹配正则
+        let IReg = /^(IB|IW|ID)([0-9]{1,})$/ // 输入匹配正则
+        let QReg = /^(QB|QW|QD)([0-9]{1,})$/ // 输出匹配正则
 
         if (bitReg.test(popupData.dataValue)) {
           let arr =  popupData.dataValue.match(bitReg) 
@@ -302,10 +302,10 @@ function handleBlur (e) {
 
 
       } else if (popupData.dataType === '文本变量8位字符集' || popupData.dataType === '文本变量16位字符集') {
-        var bitReg = /^(MB)([0-9]{1,})$/     // 位匹配正则
-        var dbReg = /^(DB)([1-9]{1,})([.]{1})((DBB){1})([0-9]{1,})$/ // DB号匹配正则
-        var IReg = /^(IB)([0-9]{1,})$/ // 输入匹配正则
-        var QReg = /^(QB)([0-9]{1,})$/ // 输出匹配正则
+        let bitReg = /^(MB)([0-9]{1,})$/     // 位匹配正则
+        let dbReg = /^(DB)([1-9]{1,})([.]{1})((DBB){1})([0-9]{1,})$/ // DB号匹配正则
+        let IReg = /^(IB)([0-9]{1,})$/ // 输入匹配正则
+        let QReg = /^(QB)([0-9]{1,})$/ // 输出匹配正则
 
         if (bitReg.test(popupData.dataValue)) {
           let arr =  popupData.dataValue.match(bitReg) 
@@ -343,10 +343,10 @@ function handleBlur (e) {
 
 
       } else if (popupData.dataType === '字符串' || popupData.dataType === '宽字符串') {
-        var bitReg = /^(MB|MW)([0-9]{1,})$/     // 位匹配正则
-        var dbReg = /^(DB)([1-9]{1,})([.]{1})((DBB|DBW){1})([0-9]{1,})$/ // DB号匹配正则
-        var IReg = /^(IB|IW)([0-9]{1,})$/ // 输入匹配正则
-        var QReg = /^(QB|QW)([0-9]{1,})$/ // 输出匹配正则
+        let bitReg = /^(MB|MW)([0-9]{1,})$/     // 位匹配正则
+        let dbReg = /^(DB)([1-9]{1,})([.]{1})((DBB|DBW){1})([0-9]{1,})$/ // DB号匹配正则
+        let IReg = /^(IB|IW)([0-9]{1,})$/ // 输入匹配正则
+        let QReg = /^(QB|QW)([0-9]{1,})$/ // 输出匹配正则
         
         if (bitReg.test(popupData.dataValue)) {
           let arr =  popupData.dataValue.match(bitReg) 
