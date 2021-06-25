@@ -3,7 +3,7 @@
 // 协议名称： S7_TCP   Modbus_TCP  OPC_DA  OPC_UA  MC3E_Binary_Etherent  MCA1E_Binary_Etherent  Fins_TCP
 var popupData = {
   protocolName: 'Modbus_TCP',
-  dataType: '二进制变量',
+  dataType: '字符串',
   dataValue: '',  // 变量地址
   dataLen: '4',  // 字符长度
 }
@@ -41,7 +41,7 @@ function resetData () {
     lettleValue: 0, // 寄存器字母对应的值
     DBNum: 1, // DB号
     bit: 0,  //  位
-    len: 9, // 长度
+    len: popupData.dataLen, // 长度
     addressOffset: 1, // 地址偏移量
     addressType: '字节', // 地址类型
     addressValue: '', // 最后组装出来的变量值
@@ -401,19 +401,101 @@ function handleBlur (e) {
 
 
       }
-      formData = JSON.parse(JSON.stringify(addressData))
   } else if (popupData.protocolName === 'Modbus_TCP') {
+    let types = ['有符号8位整型','有符号16位整型','有符号32位整型','有符号64位整型','无符号8位整型','无符号16位整型','无符号32位整型','无符号64位整型','F32位浮点数IEEE754','F64位浮点数IEEE754']
+    if (e.target.value == '000000') {
+      e.target.value = ''
+          popupData.dataValue = ''
+          resetData()
+          alert('输入格式不正确，请重新输入')
+          return
+    }
     // 1. 数据区域  2. 偏移地址   3.位  4. 长度
     if (popupData.dataType === '二进制变量') {
-      let coilReg = /^[0]([0]{4})$/     // 线圈状态匹配正则
-      let dIReg = /^(DB)([1-9]{1,})([.]{1})((DBX){1})([0-9]{1,})([.]{1})([0-7]{1,})$/ // 离散输入匹配正则
-      let IReg = /^[I]([0-9]{1,})([.]{1})([0-7]{1})$/ // 输入寄存器正则
-      let KReg = /^[Q]([0-9]{1,})([.]{1})([0-7]{1})$/ // 保持寄存器正则
+      let coilReg = /^[0]([0-9]{5})$/     // 线圈状态匹配正则
+      let dIReg = /^[1]([0-9]{5})$/  // 离散输入匹配正则
+      let IReg = /^[3]([0-9]{5})([.]{1})([0-9]|(1[0-5]))$/ // 输入寄存器正则
+      let KReg = /^[4]([0-9]{5})([.]{1})([0-9]|(1[0-5]))$/  // 保持寄存器正则
 
+      if (coilReg.test(popupData.dataValue)) {
+        let arr =  popupData.dataValue.match(coilReg) 
+        addressData.dataArea = '线圈状态'
+        addressData.address = parseInt(arr[1])
+        addressData.showList = [1,2]
+      } else if (dIReg.test(popupData.dataValue)) {
+        let arr =  popupData.dataValue.match(dIReg) 
+        addressData.dataArea = '离散输入状态'
+        addressData.address = parseInt(arr[1])
+        addressData.showList = [1,2]
+      } else if (IReg.test(popupData.dataValue)) {
+        let arr =  popupData.dataValue.match(IReg) 
+        console.log(arr)
+        addressData.dataArea = '输入寄存器'
+        addressData.address = parseInt(arr[1])
+        addressData.bit = arr[3]
+        addressData.showList = [1,2,3]
+      } else if (KReg.test(popupData.dataValue)) {
+        let arr =  popupData.dataValue.match(KReg) 
+        addressData.dataArea = '保持寄存器'
+        addressData.address = parseInt(arr[1])
+        addressData.bit = arr[3]
+        addressData.showList = [1,2,3]
+      } else {
+        e.target.value = ''
+        popupData.dataValue = ''
+        resetData()
+        alert('输入格式不正确，请重新输入')
+        return
+      }
 
+    } else if (types.includes(popupData.dataType)) {
+      let IReg = /^[3]([0-9]{5})$/ // 输入寄存器正则
+      let KReg = /^[4]([0-9]{5})$/  // 保持寄存器正则
 
+      if (IReg.test(popupData.dataValue)) {
+        let arr =  popupData.dataValue.match(IReg) 
+        addressData.dataArea = '输入寄存器'
+        addressData.address = parseInt(arr[1])
+        addressData.showList = [1,2]
+      } else if (KReg.test(popupData.dataValue)) {
+        let arr =  popupData.dataValue.match(KReg) 
+        addressData.dataArea = '保持寄存器'
+        addressData.address = parseInt(arr[1])
+        addressData.showList = [1,2]
+      } else {
+        e.target.value = ''
+        popupData.dataValue = ''
+        resetData()
+        alert('输入格式不正确，请重新输入')
+        return
+      }
+    } else if (popupData.dataType === '字符串') {
+      let IReg = /^[3]([0-9]{5})$/ // 输入寄存器正则
+      let KReg = /^[4]([0-9]{5})$/  // 保持寄存器正则
+
+      if (IReg.test(popupData.dataValue)) {
+        let arr =  popupData.dataValue.match(IReg) 
+        addressData.dataArea = '输入寄存器'
+        addressData.address = parseInt(arr[1])
+        addressData.len = popupData.dataLen
+        addressData.showList = [1,2,4]
+      } else if (KReg.test(popupData.dataValue)) {
+        let arr =  popupData.dataValue.match(KReg) 
+        addressData.dataArea = '保持寄存器'
+        addressData.address = parseInt(arr[1])
+        addressData.len = popupData.dataLen
+        addressData.showList = [1,2,4]
+      } else {
+        e.target.value = ''
+        popupData.dataValue = ''
+        resetData()
+        alert('输入格式不正确，请重新输入')
+        return
+      }
     }
-  }
+  } 
+
+  formData = JSON.parse(JSON.stringify(addressData))
 }
 
 
