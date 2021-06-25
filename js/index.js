@@ -2,8 +2,8 @@
 /* 定义变量 */
 // 协议名称： S7_TCP   Modbus_TCP  OPC_DA  OPC_UA  MC3E_Binary_Etherent  MCA1E_Binary_Etherent  Fins_TCP
 var popupData = {
-  protocolName: 'MC3E_Binary_Etherent',
-  dataType: '字符串',
+  protocolName: 'Fins_TCP',
+  dataType: '有符号8位整型',
   dataValue: '',  // 变量地址
   dataLen: '4',  // 字符长度
 }
@@ -74,6 +74,7 @@ function handleBlur (e) {
     $    以前面字符结束
     ([0-9]{1,})   大于0的正整数 不限位数
     ([.]{1})  匹配.
+    ([0-9]|(1[0-5])) 1-15 位整数
   */
   if (popupData.protocolName === 'S7_TCP') {
        // 1: 数据区域  2. 寄存器字母块（M/DBX/I/Q/MB/DBB/IB/QB/MW/DBW/IW/QW/MD/DBD/ID/QD） 3.  DB号  4. 地址偏移量   5. 位   6. 长度   7.  地址类型 
@@ -799,6 +800,648 @@ function handleBlur (e) {
         return
       }
 
+
+    }
+  } else if (popupData.protocolName === 'Fins_TCP') {
+    // 1. 数据区域    2.  地址    3.  位    4. 长度
+    if (popupData.dataType === '二进制变量'){
+      let TIMReg = /^(T)([0-9]{1,})$/
+      let CIOReg = /^(CIO)([0-9]{1,})([.]{1})([0-9]|(1[0-5]))$/
+      let WRReg = /^(W)([0-9]{1,})([.]{1})([0-9]|(1[0-5]))$/
+      let HRReg = /^(H)([0-9]{1,})([.]{1})([0-9]|(1[0-5]))$/
+      let ARReg = /^(A)([0-9]{1,})([.]{1})([0-9]|(1[0-5]))$/
+      let DMReg = /^(D)([0-9]{1,})([.]{1})([0-9]|(1[0-5]))$/
+      let ECBReg = /^(E)([0-9]{1,})([.]{1})([0-9]|(1[0-5]))$/
+      let E0Reg = /^(E00_)([0-9]{1,})([.]{1})([0-9]|(1[0-5]))$/
+      let E1Reg = /^(E01_)([0-9]{1,})([.]{1})([0-9]|(1[0-5]))$/
+      let E2Reg = /^(E02_)([0-9]{1,})([.]{1})([0-9]|(1[0-5]))$/
+      let E3Reg = /^(E03_)([0-9]{1,})([.]{1})([0-9]|(1[0-5]))$/
+      let E4Reg = /^(E04_)([0-9]{1,})([.]{1})([0-9]|(1[0-5]))$/
+      let E5Reg = /^(E05_)([0-9]{1,})([.]{1})([0-9]|(1[0-5]))$/
+      let E6Reg = /^(E06_)([0-9]{1,})([.]{1})([0-9]|(1[0-5]))$/
+      let E7Reg = /^(E07_)([0-9]{1,})([.]{1})([0-9]|(1[0-5]))$/
+      let E8Reg = /^(E08_)([0-9]{1,})([.]{1})([0-9]|(1[0-5]))$/
+      let EAReg = /^(E0A_)([0-9]{1,})([.]{1})([0-9]|(1[0-5]))$/
+      let EBReg = /^(E0B_)([0-9]{1,})([.]{1})([0-9]|(1[0-5]))$/
+      let ECReg = /^(E0C_)([0-9]{1,})([.]{1})([0-9]|(1[0-5]))$/
+      let EDReg = /^(E0D_)([0-9]{1,})([.]{1})([0-9]|(1[0-5]))$/
+      let EEReg = /^(E0E_)([0-9]{1,})([.]{1})([0-9]|(1[0-5]))$/
+      let EFReg = /^(E0F_)([0-9]{1,})([.]{1})([0-9]|(1[0-5]))$/
+      let E10Reg = /^(E10_)([0-9]{1,})([.]{1})([0-9]|(1[0-5]))$/
+      let E11Reg = /^(E11_)([0-9]{1,})([.]{1})([0-9]|(1[0-5]))$/
+      let E12Reg = /^(E12_)([0-9]{1,})([.]{1})([0-9]|(1[0-5]))$/
+      let E13Reg = /^(E13_)([0-9]{1,})([.]{1})([0-9]|(1[0-5]))$/
+      let E14Reg = /^(E14_)([0-9]{1,})([.]{1})([0-9]|(1[0-5]))$/
+      let E15Reg = /^(E15_)([0-9]{1,})([.]{1})([0-9]|(1[0-5]))$/
+      let E16Reg = /^(E16_)([0-9]{1,})([.]{1})([0-9]|(1[0-5]))$/
+      let E17Reg = /^(E17_)([0-9]{1,})([.]{1})([0-9]|(1[0-5]))$/
+      let E18Reg = /^(E18_)([0-9]{1,})([.]{1})([0-9]|(1[0-5]))$/
+
+      if (TIMReg.test(popupData.dataValue)) {
+        let arr =  popupData.dataValue.match(TIMReg) 
+        addressData.dataArea = 'TIM/CNT(Complettion Flag)'
+        addressData.address = parseInt(arr[2])
+        addressData.showList = [1,2]
+      } else if (CIOReg.test(popupData.dataValue)) {
+        let arr = popupData.dataValue.match(CIOReg) 
+        addressData.dataArea = 'CIO'
+        addressData.address = parseInt(arr[2])
+        addressData.bit = arr[4]
+        addressData.showList = [1,2,3]
+      } else if (WRReg.test(popupData.dataValue)) {
+        let arr = popupData.dataValue.match(WRReg) 
+        addressData.dataArea = 'WR'
+        addressData.address = parseInt(arr[2])
+        addressData.bit = arr[4]
+        addressData.showList = [1,2,3]
+      } else if (HRReg.test(popupData.dataValue)) {
+        let arr = popupData.dataValue.match(HRReg) 
+        addressData.dataArea = 'HR'
+        addressData.address = parseInt(arr[2])
+        addressData.bit = arr[4]
+        addressData.showList = [1,2,3]
+      } else if (ARReg.test(popupData.dataValue)) {
+        let arr = popupData.dataValue.match(ARReg) 
+        addressData.dataArea = 'AR'
+        addressData.address = parseInt(arr[2])
+        addressData.bit = arr[4]
+        addressData.showList = [1,2,3]
+      } else if (DMReg.test(popupData.dataValue)) {
+        let arr = popupData.dataValue.match(DMReg) 
+        addressData.dataArea = 'DM'
+        addressData.address = parseInt(arr[2])
+        addressData.bit = arr[4]
+        addressData.showList = [1,2,3]
+      } else if (ECBReg.test(popupData.dataValue)) {
+        let arr = popupData.dataValue.match(ECBReg) 
+        addressData.dataArea = 'EM current bank'
+        addressData.address = parseInt(arr[2])
+        addressData.bit = arr[4]
+        addressData.showList = [1,2,3]
+      } else if (E0Reg.test(popupData.dataValue)) {
+        let arr = popupData.dataValue.match(E0Reg) 
+        addressData.dataArea = 'EM bank 0'
+        addressData.address = parseInt(arr[2])
+        addressData.bit = arr[4]
+        addressData.showList = [1,2,3]
+      } else if (E1Reg.test(popupData.dataValue)) {
+        let arr = popupData.dataValue.match(E1Reg) 
+        addressData.dataArea = 'EM bank 1'
+        addressData.address = parseInt(arr[2])
+        addressData.bit = arr[4]
+        addressData.showList = [1,2,3]
+      } else if (E2Reg.test(popupData.dataValue)) {
+        let arr = popupData.dataValue.match(E2Reg) 
+        addressData.dataArea = 'EM bank 2'
+        addressData.address = parseInt(arr[2])
+        addressData.bit = arr[4]
+        addressData.showList = [1,2,3]
+      } else if (E3Reg.test(popupData.dataValue)) {
+        let arr = popupData.dataValue.match(E3Reg) 
+        addressData.dataArea = 'EM bank 3'
+        addressData.address = parseInt(arr[2])
+        addressData.bit = arr[4]
+        addressData.showList = [1,2,3]
+      } else if (E4Reg.test(popupData.dataValue)) {
+        let arr = popupData.dataValue.match(E4Reg) 
+        addressData.dataArea = 'EM bank 4'
+        addressData.address = parseInt(arr[2])
+        addressData.bit = arr[4]
+        addressData.showList = [1,2,3]
+      } else if (E5Reg.test(popupData.dataValue)) {
+        let arr = popupData.dataValue.match(E5Reg) 
+        addressData.dataArea = 'EM bank 5'
+        addressData.address = parseInt(arr[2])
+        addressData.bit = arr[4]
+        addressData.showList = [1,2,3]
+      } else if (E6Reg.test(popupData.dataValue)) {
+        let arr = popupData.dataValue.match(E6Reg) 
+        addressData.dataArea = 'EM bank 6'
+        addressData.address = parseInt(arr[2])
+        addressData.bit = arr[4]
+        addressData.showList = [1,2,3]
+      } else if (E7Reg.test(popupData.dataValue)) {
+        let arr = popupData.dataValue.match(E7Reg) 
+        addressData.dataArea = 'EM bank 7'
+        addressData.address = parseInt(arr[2])
+        addressData.bit = arr[4]
+        addressData.showList = [1,2,3]
+      } else if (E8Reg.test(popupData.dataValue)) {
+        let arr = popupData.dataValue.match(E8Reg) 
+        addressData.dataArea = 'EM bank 8'
+        addressData.address = parseInt(arr[2])
+        addressData.bit = arr[4]
+        addressData.showList = [1,2,3]
+      } else if (EAReg.test(popupData.dataValue)) {
+        let arr = popupData.dataValue.match(EAReg) 
+        addressData.dataArea = 'EM bank A'
+        addressData.address = parseInt(arr[2])
+        addressData.bit = arr[4]
+        addressData.showList = [1,2,3]
+      } else if (EBReg.test(popupData.dataValue)) {
+        let arr = popupData.dataValue.match(EBReg) 
+        addressData.dataArea = 'EM bank B'
+        addressData.address = parseInt(arr[2])
+        addressData.bit = arr[4]
+        addressData.showList = [1,2,3]
+      } else if (ECReg.test(popupData.dataValue)) {
+        let arr = popupData.dataValue.match(ECReg) 
+        addressData.dataArea = 'EM bank C'
+        addressData.address = parseInt(arr[2])
+        addressData.bit = arr[4]
+        addressData.showList = [1,2,3]
+      } else if (EDReg.test(popupData.dataValue)) {
+        let arr = popupData.dataValue.match(EDReg) 
+        addressData.dataArea = 'EM bank D'
+        addressData.address = parseInt(arr[2])
+        addressData.bit = arr[4]
+        addressData.showList = [1,2,3]
+      } else if (EEReg.test(popupData.dataValue)) {
+        let arr = popupData.dataValue.match(EEReg) 
+        addressData.dataArea = 'EM bank E'
+        addressData.address = parseInt(arr[2])
+        addressData.bit = arr[4]
+        addressData.showList = [1,2,3]
+      } else if (EFReg.test(popupData.dataValue)) {
+        let arr = popupData.dataValue.match(EFReg) 
+        addressData.dataArea = 'EM bank F'
+        addressData.address = parseInt(arr[2])
+        addressData.bit = arr[4]
+        addressData.showList = [1,2,3]
+      } else if (E10Reg.test(popupData.dataValue)) {
+        let arr = popupData.dataValue.match(E10Reg) 
+        addressData.dataArea = 'EM bank 10'
+        addressData.address = parseInt(arr[2])
+        addressData.bit = arr[4]
+        addressData.showList = [1,2,3]
+      } else if (E11Reg.test(popupData.dataValue)) {
+        let arr = popupData.dataValue.match(E11Reg) 
+        addressData.dataArea = 'EM bank 11'
+        addressData.address = parseInt(arr[2])
+        addressData.bit = arr[4]
+        addressData.showList = [1,2,3]
+      } else if (E12Reg.test(popupData.dataValue)) {
+        let arr = popupData.dataValue.match(E12Reg) 
+        addressData.dataArea = 'EM bank 12'
+        addressData.address = parseInt(arr[2])
+        addressData.bit = arr[4]
+        addressData.showList = [1,2,3]
+      } else if (E13Reg.test(popupData.dataValue)) {
+        let arr = popupData.dataValue.match(E13Reg) 
+        addressData.dataArea = 'EM bank 13'
+        addressData.address = parseInt(arr[2])
+        addressData.bit = arr[4]
+        addressData.showList = [1,2,3]
+      } else if (E14Reg.test(popupData.dataValue)) {
+        let arr = popupData.dataValue.match(E14Reg) 
+        addressData.dataArea = 'EM bank 14'
+        addressData.address = parseInt(arr[2])
+        addressData.bit = arr[4]
+        addressData.showList = [1,2,3]
+      } else if (E15Reg.test(popupData.dataValue)) {
+        let arr = popupData.dataValue.match(E15Reg) 
+        addressData.dataArea = 'EM bank 15'
+        addressData.address = parseInt(arr[2])
+        addressData.bit = arr[4]
+        addressData.showList = [1,2,3]
+      } else if (E16Reg.test(popupData.dataValue)) {
+        let arr = popupData.dataValue.match(E16Reg) 
+        addressData.dataArea = 'EM bank 16'
+        addressData.address = parseInt(arr[2])
+        addressData.bit = arr[4]
+        addressData.showList = [1,2,3]
+      } else if (E17Reg.test(popupData.dataValue)) {
+        let arr = popupData.dataValue.match(E17Reg) 
+        addressData.dataArea = 'EM bank 17'
+        addressData.address = parseInt(arr[2])
+        addressData.bit = arr[4]
+        addressData.showList = [1,2,3]
+      } else if (E18Reg.test(popupData.dataValue)) {
+        let arr = popupData.dataValue.match(E18Reg) 
+        addressData.dataArea = 'EM bank 18'
+        addressData.address = parseInt(arr[2])
+        addressData.bit = arr[4]
+        addressData.showList = [1,2,3]
+      } else {
+        e.target.value = ''
+        popupData.dataValue = ''
+        resetData()
+        alert('输入格式不正确，请重新输入')
+        return
+      }
+
+    } else if (popupData.dataType === '字符串') {
+      let CIOReg = /^(CIO)([0-9]{1,})$/
+      let WRReg = /^(W)([0-9]{1,})$/
+      let HRReg = /^(H)([0-9]{1,})$/
+      let ARReg = /^(A)([0-9]{1,})$/
+      let DMReg = /^(D)([0-9]{1,})$/
+      let ECBReg = /^(E)([0-9]{1,})$/
+      let E0Reg = /^(E00_)([0-9]{1,})$/
+      let E1Reg = /^(E01_)([0-9]{1,})$/
+      let E2Reg = /^(E02_)([0-9]{1,})$/
+      let E3Reg = /^(E03_)([0-9]{1,})$/
+      let E4Reg = /^(E04_)([0-9]{1,})$/
+      let E5Reg = /^(E05_)([0-9]{1,})$/
+      let E6Reg = /^(E06_)([0-9]{1,})$/
+      let E7Reg = /^(E07_)([0-9]{1,})$/
+      let E8Reg = /^(E08_)([0-9]{1,})$/
+      let EAReg = /^(E0A_)([0-9]{1,})$/
+      let EBReg = /^(E0B_)([0-9]{1,})$/
+      let ECReg = /^(E0C_)([0-9]{1,})$/
+      let EDReg = /^(E0D_)([0-9]{1,})$/
+      let EEReg = /^(E0E_)([0-9]{1,})$/
+      let EFReg = /^(E0F_)([0-9]{1,})$/
+      let E10Reg = /^(E10_)([0-9]{1,})$/
+      let E11Reg = /^(E11_)([0-9]{1,})$/
+      let E12Reg = /^(E12_)([0-9]{1,})$/
+      let E13Reg = /^(E13_)([0-9]{1,})$/
+      let E14Reg = /^(E14_)([0-9]{1,})$/
+      let E15Reg = /^(E15_)([0-9]{1,})$/
+      let E16Reg = /^(E16_)([0-9]{1,})$/
+      let E17Reg = /^(E17_)([0-9]{1,})$/
+      let E18Reg = /^(E18_)([0-9]{1,})$/
+
+      if (CIOReg.test(popupData.dataValue)) {
+        let arr = popupData.dataValue.match(CIOReg) 
+        addressData.dataArea = 'CIO'
+        addressData.address = parseInt(arr[2])
+        addressData.len = popupData.dataLen
+        addressData.showList = [1,2,4]
+      } else if (WRReg.test(popupData.dataValue)) {
+        let arr = popupData.dataValue.match(WRReg) 
+        addressData.dataArea = 'WR'
+        addressData.address = parseInt(arr[2])
+        addressData.len = popupData.dataLen
+        addressData.showList = [1,2,4]
+      } else if (HRReg.test(popupData.dataValue)) {
+        let arr = popupData.dataValue.match(HRReg) 
+        addressData.dataArea = 'HR'
+        addressData.address = parseInt(arr[2])
+        addressData.len = popupData.dataLen
+        addressData.showList = [1,2,4]
+      } else if (ARReg.test(popupData.dataValue)) {
+        let arr = popupData.dataValue.match(ARReg) 
+        addressData.dataArea = 'AR'
+        addressData.address = parseInt(arr[2])
+        addressData.len = popupData.dataLen
+        addressData.showList = [1,2,4]
+      } else if (DMReg.test(popupData.dataValue)) {
+        let arr = popupData.dataValue.match(DMReg) 
+        addressData.dataArea = 'DM'
+        addressData.address = parseInt(arr[2])
+        addressData.len = popupData.dataLen
+        addressData.showList = [1,2,4]
+      } else if (ECBReg.test(popupData.dataValue)) {
+        let arr = popupData.dataValue.match(ECBReg) 
+        addressData.dataArea = 'EM current bank'
+        addressData.address = parseInt(arr[2])
+        addressData.len = popupData.dataLen
+        addressData.showList = [1,2,4]
+      } else if (E0Reg.test(popupData.dataValue)) {
+        let arr = popupData.dataValue.match(E0Reg) 
+        addressData.dataArea = 'EM bank 0'
+        addressData.address = parseInt(arr[2])
+        addressData.len = popupData.dataLen
+        addressData.showList = [1,2,4]
+      } else if (E1Reg.test(popupData.dataValue)) {
+        let arr = popupData.dataValue.match(E1Reg) 
+        addressData.dataArea = 'EM bank 1'
+        addressData.address = parseInt(arr[2])
+        addressData.len = popupData.dataLen
+        addressData.showList = [1,2,4]
+      } else if (E2Reg.test(popupData.dataValue)) {
+        let arr = popupData.dataValue.match(E2Reg) 
+        addressData.dataArea = 'EM bank 2'
+        addressData.address = parseInt(arr[2])
+        addressData.len = popupData.dataLen
+        addressData.showList = [1,2,4]
+      } else if (E3Reg.test(popupData.dataValue)) {
+        let arr = popupData.dataValue.match(E3Reg) 
+        addressData.dataArea = 'EM bank 3'
+        addressData.address = parseInt(arr[2])
+        addressData.len = popupData.dataLen
+        addressData.showList = [1,2,4]
+      } else if (E4Reg.test(popupData.dataValue)) {
+        let arr = popupData.dataValue.match(E4Reg) 
+        addressData.dataArea = 'EM bank 4'
+        addressData.address = parseInt(arr[2])
+        addressData.len = popupData.dataLen
+        addressData.showList = [1,2,4]
+      } else if (E5Reg.test(popupData.dataValue)) {
+        let arr = popupData.dataValue.match(E5Reg) 
+        addressData.dataArea = 'EM bank 5'
+        addressData.address = parseInt(arr[2])
+        addressData.len = popupData.dataLen
+        addressData.showList = [1,2,4]
+      } else if (E6Reg.test(popupData.dataValue)) {
+        let arr = popupData.dataValue.match(E6Reg) 
+        addressData.dataArea = 'EM bank 6'
+        addressData.address = parseInt(arr[2])
+        addressData.len = popupData.dataLen
+        addressData.showList = [1,2,4]
+      } else if (E7Reg.test(popupData.dataValue)) {
+        let arr = popupData.dataValue.match(E7Reg) 
+        addressData.dataArea = 'EM bank 7'
+        addressData.address = parseInt(arr[2])
+        addressData.len = popupData.dataLen
+        addressData.showList = [1,2,4]
+      } else if (E8Reg.test(popupData.dataValue)) {
+        let arr = popupData.dataValue.match(E8Reg) 
+        addressData.dataArea = 'EM bank 8'
+        addressData.address = parseInt(arr[2])
+        addressData.len = popupData.dataLen
+        addressData.showList = [1,2,4]
+      } else if (EAReg.test(popupData.dataValue)) {
+        let arr = popupData.dataValue.match(EAReg) 
+        addressData.dataArea = 'EM bank A'
+        addressData.address = parseInt(arr[2])
+        addressData.len = popupData.dataLen
+        addressData.showList = [1,2,4]
+      } else if (EBReg.test(popupData.dataValue)) {
+        let arr = popupData.dataValue.match(EBReg) 
+        addressData.dataArea = 'EM bank B'
+        addressData.address = parseInt(arr[2])
+        addressData.len = popupData.dataLen
+        addressData.showList = [1,2,4]
+      } else if (ECReg.test(popupData.dataValue)) {
+        let arr = popupData.dataValue.match(ECReg) 
+        addressData.dataArea = 'EM bank C'
+        addressData.address = parseInt(arr[2])
+        addressData.len = popupData.dataLen
+        addressData.showList = [1,2,4]
+      } else if (EDReg.test(popupData.dataValue)) {
+        let arr = popupData.dataValue.match(EDReg) 
+        addressData.dataArea = 'EM bank D'
+        addressData.address = parseInt(arr[2])
+        addressData.len = popupData.dataLen
+        addressData.showList = [1,2,4]
+      } else if (EEReg.test(popupData.dataValue)) {
+        let arr = popupData.dataValue.match(EEReg) 
+        addressData.dataArea = 'EM bank E'
+        addressData.address = parseInt(arr[2])
+        addressData.len = popupData.dataLen
+        addressData.showList = [1,2,4]
+      } else if (EFReg.test(popupData.dataValue)) {
+        let arr = popupData.dataValue.match(EFReg) 
+        addressData.dataArea = 'EM bank F'
+        addressData.address = parseInt(arr[2])
+        addressData.len = popupData.dataLen
+        addressData.showList = [1,2,4]
+      } else if (E10Reg.test(popupData.dataValue)) {
+        let arr = popupData.dataValue.match(E10Reg) 
+        addressData.dataArea = 'EM bank 10'
+        addressData.address = parseInt(arr[2])
+        addressData.len = popupData.dataLen
+        addressData.showList = [1,2,4]
+      } else if (E11Reg.test(popupData.dataValue)) {
+        let arr = popupData.dataValue.match(E11Reg) 
+        addressData.dataArea = 'EM bank 11'
+        addressData.address = parseInt(arr[2])
+        addressData.len = popupData.dataLen
+        addressData.showList = [1,2,4]
+      } else if (E12Reg.test(popupData.dataValue)) {
+        let arr = popupData.dataValue.match(E12Reg) 
+        addressData.dataArea = 'EM bank 12'
+        addressData.address = parseInt(arr[2])
+        addressData.len = popupData.dataLen
+        addressData.showList = [1,2,4]
+      } else if (E13Reg.test(popupData.dataValue)) {
+        let arr = popupData.dataValue.match(E13Reg) 
+        addressData.dataArea = 'EM bank 13'
+        addressData.address = parseInt(arr[2])
+        addressData.len = popupData.dataLen
+        addressData.showList = [1,2,4]
+      } else if (E14Reg.test(popupData.dataValue)) {
+        let arr = popupData.dataValue.match(E14Reg) 
+        addressData.dataArea = 'EM bank 14'
+        addressData.address = parseInt(arr[2])
+        addressData.len = popupData.dataLen
+        addressData.showList = [1,2,4]
+      } else if (E15Reg.test(popupData.dataValue)) {
+        let arr = popupData.dataValue.match(E15Reg) 
+        addressData.dataArea = 'EM bank 15'
+        addressData.address = parseInt(arr[2])
+        addressData.len = popupData.dataLen
+        addressData.showList = [1,2,4]
+      } else if (E16Reg.test(popupData.dataValue)) {
+        let arr = popupData.dataValue.match(E16Reg) 
+        addressData.dataArea = 'EM bank 16'
+        addressData.address = parseInt(arr[2])
+        addressData.len = popupData.dataLen
+        addressData.showList = [1,2,4]
+      } else if (E17Reg.test(popupData.dataValue)) {
+        let arr = popupData.dataValue.match(E17Reg) 
+        addressData.dataArea = 'EM bank 17'
+        addressData.address = parseInt(arr[2])
+        addressData.len = popupData.dataLen
+        addressData.showList = [1,2,4]
+      } else if (E18Reg.test(popupData.dataValue)) {
+        let arr = popupData.dataValue.match(E18Reg) 
+        addressData.dataArea = 'EM bank 18'
+        addressData.address = parseInt(arr[2])
+        addressData.len = popupData.dataLen
+        addressData.showList = [1,2,4]
+      } else {
+        e.target.value = ''
+        popupData.dataValue = ''
+        resetData()
+        alert('输入格式不正确，请重新输入')
+        return
+      }
+
+    } else {
+      let CIOReg = /^(CIO)([0-9]{1,})$/
+      let WRReg = /^(W)([0-9]{1,})$/
+      let HRReg = /^(H)([0-9]{1,})$/
+      let ARReg = /^(A)([0-9]{1,})$/
+      let DMReg = /^(D)([0-9]{1,})$/
+      let ECBReg = /^(E)([0-9]{1,})$/
+      let E0Reg = /^(E00_)([0-9]{1,})$/
+      let E1Reg = /^(E01_)([0-9]{1,})$/
+      let E2Reg = /^(E02_)([0-9]{1,})$/
+      let E3Reg = /^(E03_)([0-9]{1,})$/
+      let E4Reg = /^(E04_)([0-9]{1,})$/
+      let E5Reg = /^(E05_)([0-9]{1,})$/
+      let E6Reg = /^(E06_)([0-9]{1,})$/
+      let E7Reg = /^(E07_)([0-9]{1,})$/
+      let E8Reg = /^(E08_)([0-9]{1,})$/
+      let EAReg = /^(E0A_)([0-9]{1,})$/
+      let EBReg = /^(E0B_)([0-9]{1,})$/
+      let ECReg = /^(E0C_)([0-9]{1,})$/
+      let EDReg = /^(E0D_)([0-9]{1,})$/
+      let EEReg = /^(E0E_)([0-9]{1,})$/
+      let EFReg = /^(E0F_)([0-9]{1,})$/
+      let E10Reg = /^(E10_)([0-9]{1,})$/
+      let E11Reg = /^(E11_)([0-9]{1,})$/
+      let E12Reg = /^(E12_)([0-9]{1,})$/
+      let E13Reg = /^(E13_)([0-9]{1,})$/
+      let E14Reg = /^(E14_)([0-9]{1,})$/
+      let E15Reg = /^(E15_)([0-9]{1,})$/
+      let E16Reg = /^(E16_)([0-9]{1,})$/
+      let E17Reg = /^(E17_)([0-9]{1,})$/
+      let E18Reg = /^(E18_)([0-9]{1,})$/
+
+      if (CIOReg.test(popupData.dataValue)) {
+        let arr = popupData.dataValue.match(CIOReg) 
+        addressData.dataArea = 'CIO'
+        addressData.address = parseInt(arr[2])
+        addressData.showList = [1,2]
+      } else if (WRReg.test(popupData.dataValue)) {
+        let arr = popupData.dataValue.match(WRReg) 
+        addressData.dataArea = 'WR'
+        addressData.address = parseInt(arr[2])
+        addressData.showList = [1,2]
+      } else if (HRReg.test(popupData.dataValue)) {
+        let arr = popupData.dataValue.match(HRReg) 
+        addressData.dataArea = 'HR'
+        addressData.address = parseInt(arr[2])
+        addressData.showList = [1,2]
+      } else if (ARReg.test(popupData.dataValue)) {
+        let arr = popupData.dataValue.match(ARReg) 
+        addressData.dataArea = 'AR'
+        addressData.address = parseInt(arr[2])
+        addressData.showList = [1,2]
+      } else if (DMReg.test(popupData.dataValue)) {
+        let arr = popupData.dataValue.match(DMReg) 
+        addressData.dataArea = 'DM'
+        addressData.address = parseInt(arr[2])
+        addressData.showList = [1,2]
+      } else if (ECBReg.test(popupData.dataValue)) {
+        let arr = popupData.dataValue.match(ECBReg) 
+        addressData.dataArea = 'EM current bank'
+        addressData.address = parseInt(arr[2])
+        addressData.showList = [1,2]
+      } else if (E0Reg.test(popupData.dataValue)) {
+        let arr = popupData.dataValue.match(E0Reg) 
+        addressData.dataArea = 'EM bank 0'
+        addressData.address = parseInt(arr[2])
+        addressData.showList = [1,2]
+      } else if (E1Reg.test(popupData.dataValue)) {
+        let arr = popupData.dataValue.match(E1Reg) 
+        addressData.dataArea = 'EM bank 1'
+        addressData.address = parseInt(arr[2])
+        addressData.showList = [1,2]
+      } else if (E2Reg.test(popupData.dataValue)) {
+        let arr = popupData.dataValue.match(E2Reg) 
+        addressData.dataArea = 'EM bank 2'
+        addressData.address = parseInt(arr[2])
+        addressData.showList = [1,2]
+      } else if (E3Reg.test(popupData.dataValue)) {
+        let arr = popupData.dataValue.match(E3Reg) 
+        addressData.dataArea = 'EM bank 3'
+        addressData.address = parseInt(arr[2])
+        addressData.showList = [1,2]
+      } else if (E4Reg.test(popupData.dataValue)) {
+        let arr = popupData.dataValue.match(E4Reg) 
+        addressData.dataArea = 'EM bank 4'
+        addressData.address = parseInt(arr[2])
+        addressData.showList = [1,2]
+      } else if (E5Reg.test(popupData.dataValue)) {
+        let arr = popupData.dataValue.match(E5Reg) 
+        addressData.dataArea = 'EM bank 5'
+        addressData.address = parseInt(arr[2])
+        addressData.showList = [1,2]
+      } else if (E6Reg.test(popupData.dataValue)) {
+        let arr = popupData.dataValue.match(E6Reg) 
+        addressData.dataArea = 'EM bank 6'
+        addressData.address = parseInt(arr[2])
+        addressData.len = popupData.dataLen
+        addressData.showList = [1,2]
+      } else if (E7Reg.test(popupData.dataValue)) {
+        let arr = popupData.dataValue.match(E7Reg) 
+        addressData.dataArea = 'EM bank 7'
+        addressData.address = parseInt(arr[2])
+        addressData.showList = [1,2]
+      } else if (E8Reg.test(popupData.dataValue)) {
+        let arr = popupData.dataValue.match(E8Reg) 
+        addressData.dataArea = 'EM bank 8'
+        addressData.address = parseInt(arr[2])
+        addressData.len = popupData.dataLen
+        addressData.showList = [1,2]
+      } else if (EAReg.test(popupData.dataValue)) {
+        let arr = popupData.dataValue.match(EAReg) 
+        addressData.dataArea = 'EM bank A'
+        addressData.address = parseInt(arr[2])
+        addressData.showList = [1,2]
+      } else if (EBReg.test(popupData.dataValue)) {
+        let arr = popupData.dataValue.match(EBReg) 
+        addressData.dataArea = 'EM bank B'
+        addressData.address = parseInt(arr[2])
+        addressData.showList = [1,2]
+      } else if (ECReg.test(popupData.dataValue)) {
+        let arr = popupData.dataValue.match(ECReg) 
+        addressData.dataArea = 'EM bank C'
+        addressData.address = parseInt(arr[2])
+        addressData.len = popupData.dataLen
+        addressData.showList = [1,2]
+      } else if (EDReg.test(popupData.dataValue)) {
+        let arr = popupData.dataValue.match(EDReg) 
+        addressData.dataArea = 'EM bank D'
+        addressData.address = parseInt(arr[2])
+        addressData.showList = [1,2]
+      } else if (EEReg.test(popupData.dataValue)) {
+        let arr = popupData.dataValue.match(EEReg) 
+        addressData.dataArea = 'EM bank E'
+        addressData.address = parseInt(arr[2])
+        addressData.showList = [1,2]
+      } else if (EFReg.test(popupData.dataValue)) {
+        let arr = popupData.dataValue.match(EFReg) 
+        addressData.dataArea = 'EM bank F'
+        addressData.address = parseInt(arr[2])
+        addressData.showList = [1,2]
+      } else if (E10Reg.test(popupData.dataValue)) {
+        let arr = popupData.dataValue.match(E10Reg) 
+        addressData.dataArea = 'EM bank 10'
+        addressData.address = parseInt(arr[2])
+        addressData.showList = [1,2]
+      } else if (E11Reg.test(popupData.dataValue)) {
+        let arr = popupData.dataValue.match(E11Reg) 
+        addressData.dataArea = 'EM bank 11'
+        addressData.address = parseInt(arr[2])
+        addressData.showList = [1,2]
+      } else if (E12Reg.test(popupData.dataValue)) {
+        let arr = popupData.dataValue.match(E12Reg) 
+        addressData.dataArea = 'EM bank 12'
+        addressData.address = parseInt(arr[2])
+        addressData.showList = [1,2]
+      } else if (E13Reg.test(popupData.dataValue)) {
+        let arr = popupData.dataValue.match(E13Reg) 
+        addressData.dataArea = 'EM bank 13'
+        addressData.address = parseInt(arr[2])
+        addressData.showList = [1,2]
+      } else if (E14Reg.test(popupData.dataValue)) {
+        let arr = popupData.dataValue.match(E14Reg) 
+        addressData.dataArea = 'EM bank 14'
+        addressData.address = parseInt(arr[2])
+        addressData.showList = [1,2]
+      } else if (E15Reg.test(popupData.dataValue)) {
+        let arr = popupData.dataValue.match(E15Reg) 
+        addressData.dataArea = 'EM bank 15'
+        addressData.address = parseInt(arr[2])
+        addressData.showList = [1,2]
+      } else if (E16Reg.test(popupData.dataValue)) {
+        let arr = popupData.dataValue.match(E16Reg) 
+        addressData.dataArea = 'EM bank 16'
+        addressData.address = parseInt(arr[2])
+        addressData.showList = [1,2]
+      } else if (E17Reg.test(popupData.dataValue)) {
+        let arr = popupData.dataValue.match(E17Reg) 
+        addressData.dataArea = 'EM bank 17'
+        addressData.address = parseInt(arr[2])
+        addressData.showList = [1,2]
+      } else if (E18Reg.test(popupData.dataValue)) {
+        let arr = popupData.dataValue.match(E18Reg) 
+        addressData.dataArea = 'EM bank 18'
+        addressData.address = parseInt(arr[2])
+        addressData.showList = [1,2]
+      } else {
+        e.target.value = ''
+        popupData.dataValue = ''
+        resetData()
+        alert('输入格式不正确，请重新输入')
+        return
+      }
 
     }
   }
