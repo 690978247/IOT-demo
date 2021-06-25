@@ -2,7 +2,7 @@
 /* 定义变量 */
 // 协议名称： S7_TCP   Modbus_TCP  OPC_DA  OPC_UA  MC3E_Binary_Etherent  MCA1E_Binary_Etherent  Fins_TCP
 var popupData = {
-  protocolName: 'MC3E_Binary_Etherent',
+  protocolName: 'MCA1E_Binary_Etherent',
   dataType: '有符号8位整型',
   dataValue: '',  // 变量地址
   dataLen: '4',  // 字符长度
@@ -650,6 +650,157 @@ function handleBlur (e) {
         return
       }
     }
+  } else if (popupData.protocolName === 'MCA1E_Binary_Etherent') {
+    if (popupData.dataType === '二进制变量'){
+      // 1. 数据区域    2.  地址    3.  位    4. 长度
+      let XReg = /^[X]([0-9]{1,})$/     // 输入寄存器（X）匹配正则
+      let YReg = /^[Y]([0-9]{1,})$/ // 输出寄存器（Y）匹配正则
+      let MReg = /^[M]([0-9]{1,})$/ // 辅助继电器（M）正则
+      let SReg = /^[S]([0-9]{1,})$/ // 状态（S）正则
+      let TSReg = /^(TS)([0-9]{1,})$/  // 定时器（触点）（TS）正则
+      let CSReg = /^(CS)([0-9]{1,})$/ // 计数器（触点）（CS）正则
+      let DReg =  /^[D]([0-9]{1,})([.]{1})([0-9A-F]{1})$/  // 数据寄存器（D）正则
+      let RReg =  /^[R]([0-9]{1,})([.]{1})([0-9A-F]{1})$/  // 扩展寄存器（R）正则
+      let TNReg = /^(TN)([0-9]{1,})([.]{1})([0-9A-F]{1})$/  // 定时器（当前值）（TN）正则
+      let CNReg = /^(CN)([0-9]{1,})([.]{1})([0-9A-F]{1})$/  // 计数器（当前值）（CN）正则
+
+      if (XReg.test(popupData.dataValue)) {
+        let arr =  popupData.dataValue.match(XReg) 
+        addressData.dataArea = '输入寄存器（X）'
+        addressData.address = parseInt(arr[1])
+        addressData.showList = [1,2]
+      } else if (YReg.test(popupData.dataValue)) {
+        let arr =  popupData.dataValue.match(YReg) 
+        addressData.dataArea = '输出寄存器（Y）'
+        addressData.address = parseInt(arr[1])
+        addressData.showList = [1,2]
+      } else if (MReg.test(popupData.dataValue)) {
+        let arr =  popupData.dataValue.match(MReg) 
+        addressData.dataArea = '辅助继电器（M）'
+        addressData.address = parseInt(arr[1])
+        addressData.showList = [1,2]
+      } else if (SReg.test(popupData.dataValue)) {
+        let arr =  popupData.dataValue.match(SReg) 
+        addressData.dataArea = '状态（S）'
+        addressData.address = parseInt(arr[1])
+        addressData.showList = [1,2]
+      } else if (TSReg.test(popupData.dataValue)) {
+        let arr =  popupData.dataValue.match(TSReg) 
+        addressData.dataArea = '定时器（触点）（TS）'
+        addressData.address = parseInt(arr[2])
+        addressData.showList = [1,2]
+      } else if (CSReg.test(popupData.dataValue)) {
+        let arr =  popupData.dataValue.match(CSReg) 
+        addressData.dataArea = '计数器（触点）（CS）'
+        addressData.address = parseInt(arr[2])
+        addressData.showList = [1,2]
+      } else if (DReg.test(popupData.dataValue)) {
+        let arr =  popupData.dataValue.match(DReg) 
+        addressData.dataArea = '数据寄存器（D）'
+        addressData.address = parseInt(arr[1])
+        addressData.bit = arr[3]
+        addressData.showList = [1,2,3]
+      } else if (RReg.test(popupData.dataValue)) {
+        let arr =  popupData.dataValue.match(RReg) 
+        addressData.dataArea = '扩展寄存器（R）'
+        addressData.address = parseInt(arr[1])
+        addressData.bit = arr[3]
+        addressData.showList = [1,2,3]
+      } else if (TNReg.test(popupData.dataValue)) {
+        let arr =  popupData.dataValue.match(TNReg) 
+        console.log(arr)
+        addressData.dataArea = '定时器（当前值）（TN）'
+        addressData.address = parseInt(arr[2])
+        addressData.bit = arr[4]
+        addressData.showList = [1,2,3]
+      } else if (CNReg.test(popupData.dataValue)) {
+        let arr =  popupData.dataValue.match(CNReg) 
+        addressData.dataArea = '计数器（当前值）（CN）'
+        addressData.address = parseInt(arr[2])
+        addressData.bit = arr[4]
+        addressData.showList = [1,2,3]
+      } else {
+        e.target.value = ''
+        popupData.dataValue = ''
+        resetData()
+        alert('输入格式不正确，请重新输入')
+        return
+      }
+    } else if (popupData.dataType === '字符串') {
+      let DReg =  /^[D]([0-9]{1,})$/  // 数据寄存器（D）正则
+      let RReg =  /^[R]([0-9]{1,})$/  // 扩展寄存器（R）正则
+      let TNReg = /^(TN)([0-9]{1,})$/  // 定时器（当前值）（TN）正则
+      let CNReg = /^(CN)([0-9]{1,})$/  // 计数器（当前值）（CN）正则
+
+      if (DReg.test(popupData.dataValue)) {
+        let arr =  popupData.dataValue.match(DReg) 
+        addressData.dataArea = '数据寄存器（D）'
+        addressData.address = parseInt(arr[1])
+        addressData.len = popupData.dataLen
+        addressData.showList = [1,2,4]
+      } else if (RReg.test(popupData.dataValue)) {
+        let arr =  popupData.dataValue.match(RReg) 
+        addressData.dataArea = '扩展寄存器（R）'
+        addressData.address = parseInt(arr[1])
+        addressData.len = popupData.dataLen
+        addressData.showList = [1,2,4]
+      } else if (TNReg.test(popupData.dataValue)) {
+        let arr =  popupData.dataValue.match(TNReg) 
+        console.log(arr)
+        addressData.dataArea = '定时器（当前值）（TN）'
+        addressData.address = parseInt(arr[2])
+        addressData.len = popupData.dataLen
+        addressData.showList = [1,2,4]
+      } else if (CNReg.test(popupData.dataValue)) {
+        let arr =  popupData.dataValue.match(CNReg) 
+        addressData.dataArea = '计数器（当前值）（CN）'
+        addressData.address = parseInt(arr[2])
+        addressData.len = popupData.dataLen
+        addressData.showList = [1,2,4]
+      } else {
+        e.target.value = ''
+        popupData.dataValue = ''
+        resetData()
+        alert('输入格式不正确，请重新输入')
+        return
+      }
+    } else {
+      let DReg =  /^[D]([0-9]{1,})$/  // 数据寄存器（D）正则
+      let RReg =  /^[R]([0-9]{1,})$/  // 扩展寄存器（R）正则
+      let TNReg = /^(TN)([0-9]{1,})$/  // 定时器（当前值）（TN）正则
+      let CNReg = /^(CN)([0-9]{1,})$/  // 计数器（当前值）（CN）正则
+
+      if (DReg.test(popupData.dataValue)) {
+        let arr =  popupData.dataValue.match(DReg) 
+        addressData.dataArea = '数据寄存器（D）'
+        addressData.address = parseInt(arr[1])
+        addressData.showList = [1,2]
+      } else if (RReg.test(popupData.dataValue)) {
+        let arr =  popupData.dataValue.match(RReg) 
+        addressData.dataArea = '扩展寄存器（R）'
+        addressData.address = parseInt(arr[1])
+        addressData.showList = [1,2]
+      } else if (TNReg.test(popupData.dataValue)) {
+        let arr =  popupData.dataValue.match(TNReg) 
+        console.log(arr)
+        addressData.dataArea = '定时器（当前值）（TN）'
+        addressData.address = parseInt(arr[2])
+        addressData.showList = [1,2]
+      } else if (CNReg.test(popupData.dataValue)) {
+        let arr =  popupData.dataValue.match(CNReg) 
+        addressData.dataArea = '计数器（当前值）（CN）'
+        addressData.address = parseInt(arr[2])
+        addressData.showList = [1,2]
+      } else {
+        e.target.value = ''
+        popupData.dataValue = ''
+        resetData()
+        alert('输入格式不正确，请重新输入')
+        return
+      }
+
+
+    }
   }
 
   formData = JSON.parse(JSON.stringify(addressData))
@@ -725,7 +876,7 @@ function openPop() {
       formData.showList = formData.showList.length === 0 ?  [1,2] : formData.showList
     }  else if (popupData.dataType === '字符串') {
       // 此处判断赋默认值还是回显值
-      let areas = ['数据寄存器（D）', '链接寄存器（W）', '定时器（当前值）（TN）', '计数器（当前值）（CN）']
+      let areas = ['数据寄存器（D）', '扩展寄存器（R）', '定时器（当前值）（TN）', '计数器（当前值）（CN）']
       formData.dataArea = areas.includes(formData.dataArea) ? formData.dataArea : '数据寄存器（D）'
       formData.showList = formData.showList.length === 0 ?  [1,2,4] : formData.showList
     } else {
