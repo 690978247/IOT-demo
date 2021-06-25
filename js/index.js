@@ -4,8 +4,8 @@
 
 // 需要在此处手动修改协议protocolName 和 数据类型 dataType 模拟不同协议下的数据结构
 var popupData = {
-  protocolName: 'Fins_TCP',
-  dataType: '有符号8位整型',
+  protocolName: 'S7_TCP',
+  dataType: '二进制变量',
   dataValue: '',  // 变量地址
   dataLen: '4',  // 字符长度
 }
