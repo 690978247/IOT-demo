@@ -1,6 +1,8 @@
 
 /* 定义变量 */
 // 协议名称： S7_TCP   Modbus_TCP  OPC_DA  OPC_UA  MC3E_Binary_Etherent  MCA1E_Binary_Etherent  Fins_TCP
+
+// 需要在此处手动修改协议protocolName 和 数据类型 dataType 模拟不同协议下的数据结构
 var popupData = {
   protocolName: 'Fins_TCP',
   dataType: '有符号8位整型',
