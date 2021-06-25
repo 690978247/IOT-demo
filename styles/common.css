@@ -35,7 +35,7 @@
   justify-content: space-between;
 }
 
-#address .address-text input {
+/* #address .address-text */ .demo-table input {
     background-color: #fff;
     border: none;
     box-sizing: border-box;
@@ -51,11 +51,11 @@
     transition: border-color .2s cubic-bezier(.645,.045,.355,1);
 }
 
-#address .address-text input:hover {
+/* #address .address-text */ .demo-table input:hover {
   border: 1px solid #ccc;
 }
 
-#address .address-text .address-btn {
+/* #address .address-text */ .demo-table .address-btn {
   border: 1px solid #52CEEC;
   text-align: center;
   cursor: pointer;
