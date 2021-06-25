@@ -3,9 +3,9 @@
 // 协议名称： S7_TCP   Modbus_TCP  OPC_DA  OPC_UA  MC3E_Binary_Etherent  MCA1E_Binary_Etherent  Fins_TCP
 var popupData = {
   protocolName: 'S7_TCP',
-  dataType: '文本变量8位字符集',
+  dataType: '字符串',
   dataValue: '',  // 变量地址
-  dataLen: '1',  // 字符长度
+  dataLen: '4',  // 字符长度
 }
 
 // 定义一个提交的数据结构， 用来填写默认值与回显
@@ -33,6 +33,23 @@ lenInput.value = popupData.dataLen
 
 
 /* 方法 */
+
+function resetData () {
+  formData = {
+    dataArea: '', // 数据区域
+    letters: 'M', // 寄存器字母块（M/DBX/I/Q/MB/DBB/IB/QB/MW/DBW/IW/QW/MD/DBD/ID/QD）
+    lettleValue: 0, // 寄存器字母对应的值
+    DBNum: 1, // DB号
+    bit: 0,  //  位
+    len: 9, // 长度
+    addressOffset: 1, // 地址偏移量
+    addressType: '字节', // 地址类型
+    addressValue: '', // 最后组装出来的变量值
+    showList: [], // 弹窗显示的form块
+    address: 1, // S7_TCP 以外的协议 偏移地址
+  }
+}
+
 // 字符长度
 function handleLen (e) {
   if (e.target.value <= 1) {
@@ -97,6 +114,7 @@ function handleBlur (e) {
         } else {
           e.target.value = ''
           popupData.dataValue = ''
+          resetData()
           alert('输入格式不正确，请重新输入')
           return
         }
@@ -134,6 +152,7 @@ function handleBlur (e) {
         } else {
           e.target.value = ''
           popupData.dataValue = ''
+          resetData()
           alert('输入格式不正确，请重新输入')
           return
         }
@@ -172,6 +191,7 @@ function handleBlur (e) {
         } else {
           e.target.value = ''
           popupData.dataValue = ''
+          resetData()
           alert('输入格式不正确，请重新输入')
           return
         }
@@ -211,6 +231,7 @@ function handleBlur (e) {
         } else {
           e.target.value = ''
           popupData.dataValue = ''
+          resetData()
           alert('输入格式不正确，请重新输入')
           return
         }
@@ -274,6 +295,7 @@ function handleBlur (e) {
         } else {
           e.target.value = ''
           popupData.dataValue = ''
+          resetData()
           alert('输入格式不正确，请重新输入')
           return
         }
@@ -281,42 +303,101 @@ function handleBlur (e) {
 
       } else if (popupData.dataType === '文本变量8位字符集' || popupData.dataType === '文本变量16位字符集') {
         var bitReg = /^(MB)([0-9]{1,})$/     // 位匹配正则
-        var dbReg = /^(DB)([1-9]{1,})([.]{1})((DBB|DBW|DBD){1})([0-9]{1,})$/ // DB号匹配正则
-        var IReg = /^(IB|IW|ID)([0-9]{1,})$/ // 输入匹配正则
-        var QReg = /^(QB|QW|QD)([0-9]{1,})$/ // 输出匹配正则
+        var dbReg = /^(DB)([1-9]{1,})([.]{1})((DBB){1})([0-9]{1,})$/ // DB号匹配正则
+        var IReg = /^(IB)([0-9]{1,})$/ // 输入匹配正则
+        var QReg = /^(QB)([0-9]{1,})$/ // 输出匹配正则
 
         if (bitReg.test(popupData.dataValue)) {
           let arr =  popupData.dataValue.match(bitReg) 
           addressData.dataArea = '位'
-          addressData.letters = 'MB'
-          addressData.lettleValue = arr[2]
+          addressData.addressOffset = arr[2]
           addressData.len = popupData.dataLen
-          addressData.showList = [1,2,6]
+          addressData.showList = [1,4,6]
         } else if (dbReg.test(popupData.dataValue)) {
           let arr =  popupData.dataValue.match(dbReg) 
+          console.log(arr)
           addressData.dataArea = 'DB'
           addressData.DBNum = arr[2]
-          addressData.letters = 'DBB'
-          addressData.lettleValue = arr[6]
-          addressData.showList = [1,2,3]
+          addressData.addressOffset = arr[6]
+          addressData.len = popupData.dataLen
+          addressData.showList = [1,3,4,6]
         } else if (IReg.test(popupData.dataValue)) {
           let arr =  popupData.dataValue.match(IReg) 
           addressData.dataArea = '输入'
-          addressData.letters = 'IB'
-          addressData.lettleValue = arr[2]
-          addressData.showList = [1,2]
+          addressData.addressOffset = arr[2]
+          addressData.len = popupData.dataLen
+          addressData.showList = [1,4,6]
         } else if (QReg.test(popupData.dataValue)) {
           let arr =  popupData.dataValue.match(QReg) 
           addressData.dataArea = '输出'
-          addressData.letters = 'QB'
-          addressData.lettleValue = arr[2]
-          addressData.showList = [1,2]
+          addressData.addressOffset = arr[2]
+          addressData.len = popupData.dataLen
+          addressData.showList = [1,4,6]
         } else {
           e.target.value = ''
           popupData.dataValue = ''
+          resetData()
           alert('输入格式不正确，请重新输入')
           return
         }
+
+
+      } else if (popupData.dataType === '字符串' || popupData.dataType === '宽字符串') {
+        var bitReg = /^(MB|MW)([0-9]{1,})$/     // 位匹配正则
+        var dbReg = /^(DB)([1-9]{1,})([.]{1})((DBB|DBW){1})([0-9]{1,})$/ // DB号匹配正则
+        var IReg = /^(IB|IW)([0-9]{1,})$/ // 输入匹配正则
+        var QReg = /^(QB|QW)([0-9]{1,})$/ // 输出匹配正则
+        
+        if (bitReg.test(popupData.dataValue)) {
+          let arr =  popupData.dataValue.match(bitReg) 
+          addressData.dataArea = '位'
+          addressData.addressOffset = arr[2]
+          if (arr[1] === 'MB') {
+            addressData.addressType = '字节'
+          } else if (arr[1] === 'MW') {
+            addressData.addressType = '字'
+          }
+          addressData.showList = [1,4,6,7]
+        } else if (dbReg.test(popupData.dataValue)) {
+          let arr =  popupData.dataValue.match(dbReg) 
+          console.log(arr)
+          addressData.dataArea = 'DB'
+          addressData.DBNum = arr[2]
+          addressData.addressOffset = arr[6]
+          if (arr[4] === 'DBB') {
+            addressData.addressType = '字节'
+          } else if (arr[4] === 'DBW') {
+            addressData.addressType = '字'
+          }
+          addressData.showList = [1,3,4,6,7]
+        } else if (IReg.test(popupData.dataValue)) {
+          let arr =  popupData.dataValue.match(IReg) 
+          addressData.dataArea = '输入'
+          addressData.addressOffset = arr[2]
+          if (arr[1] === 'IB') {
+            addressData.addressType = '字节'
+          } else if (arr[1] === 'IW') {
+            addressData.addressType = '字'
+          }
+          addressData.showList = [1,4,6,7]
+        } else if (QReg.test(popupData.dataValue)) {
+          let arr =  popupData.dataValue.match(QReg) 
+          addressData.dataArea = '输出'
+          addressData.addressOffset = arr[2]
+          if (arr[1] === 'QB') {
+            addressData.addressType = '字节'
+          } else if (arr[1] === 'QW') {
+            addressData.addressType = '字'
+          }
+          addressData.showList = [1,4,6,7]
+        } else {
+          e.target.value = ''
+          popupData.dataValue = ''
+          resetData()
+          alert('输入格式不正确，请重新输入')
+          return
+        }
+
 
 
       }
