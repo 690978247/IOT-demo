@@ -2431,7 +2431,36 @@ wrap.innerHTML = html
 
 // OPC DA协议、PC UA协议 弹窗渲染函数
 function renderOPCHTML(items = [], data = {}, type) {
+  renderOPCGroup(['组1','组2','组3','组4','组5','组6'])
+  renderOPCTable([{name: 'Tag_1', dataType: '二进制变量'},{name: 'Tag_2', dataType: '有符号8位整型'},{name: 'Tag_3', dataType: '文本变量8位字符集'},{name: 'Tag_4', dataType: '字符串'}])
+}
 
+// 渲染OPC协议左侧组列表
+function renderOPCGroup(gruopList = []) {
+  let group = document.getElementById('group-list')
+  let html = ``
+  gruopList.forEach(item => {
+    html += `
+      <div class="list-item">${item}</div>
+    `.trim()
+  })
+  group.innerHTML = html
+}
+// 渲染OPC协议右侧表格
+function renderOPCTable(tableData = []) {
+  let table = document.getElementById('opc-tbody')
+  let html = ``
+  tableData.forEach((item,index) => {
+    html += `
+    <tr>
+      <td class="table-num">${index + 1}</td>
+      <td>${item.name}</td>
+      <td>${item.dataType}</td>
+    </tr>
+    `.trim()
+  })
+
+  table.innerHTML = html  
 }
 
 // 选择下拉内容 -- S7_TCP协议
