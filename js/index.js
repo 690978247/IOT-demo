@@ -1455,6 +1455,21 @@ function handleBlur (e) {
 // 打开变量弹窗
 function openPop() {
   let pop = document.getElementById('popup')
+  let title = document.getElementById('popup-head-title')
+  let wrap = document.getElementById('popup-body-wrap') // S7_TCP  Modbus_TCP MC3E_Binary_Etherent  MCA1E_Binary_Etherent  Fins_TCP 弹窗内容
+  let opcWrap = document.getElementById('opc-body-wrap')  // OPC_DA  OPC_UA 弹窗内容
+
+  let protocols = ['OPC_DA', 'OPC_UA']
+  if (protocols.includes(popupData.protocolName)) {   // 修改弹窗标题
+    title.innerText = '选择OPC变量'
+    wrap.style.display = 'none'
+    opcWrap.style.display = 'block'
+  } else {
+    title.innerText = '选择地址'
+    wrap.style.display = 'block'
+    opcWrap.style.display = 'none'
+  }
+
   pop.style.display = 'block'
   addressData.len = popupData.dataLen
   formData.len =  popupData.dataLen
