@@ -238,6 +238,9 @@
   box-sizing: border-box;
   border-right: 1px solid #DCE4EB;
 }
+.opc-table table tr td:last-child {
+  border-right: none;
+}
 /* .opc-table table td:hover div{
   overflow: auto;
 } */
