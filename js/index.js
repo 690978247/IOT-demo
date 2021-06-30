@@ -4,7 +4,7 @@
 
 // 需要在此处手动修改协议protocolName 和 数据类型 dataType 模拟不同协议下的数据结构
 var popupData = {
-  protocolName: 'S7_TCP',
+  protocolName: 'OPC_DA',
   dataType: '二进制变量',
   dataValue: '',  // 变量地址
   dataLen: '4',  // 字符长度
@@ -1455,6 +1455,17 @@ function handleBlur (e) {
 // 打开变量弹窗
 function openPop() {
   let pop = document.getElementById('popup')
+  let title = document.getElementById('popup-head-title')
+  let protocols = ['OPC_DA', 'OPC_UA']
+
+  if (protocols.includes(popupData.protocolName)) {   // 修改弹窗标题
+    title.innerText = '选择OPC变量'
+  } else {
+    title.innerText = '选择地址'
+  }
+  
+
+
   pop.style.display = 'block'
   addressData.len = popupData.dataLen
   formData.len =  popupData.dataLen
