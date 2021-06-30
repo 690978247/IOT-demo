@@ -93,9 +93,8 @@
 .popup-head {
   text-align: center;
   padding: 15px 20px 15px;
-  color: #000;
-  font-weight: bold;
-  background: #1D89ED;
+  color: #fff;
+  background: #409EFF;
   font-size: 16px;
 }
 .popup-close {
@@ -103,6 +102,7 @@
   top: 20px;
   right: 20px;
   padding: 0;
+  color: #fff;
   background: transparent;
   border: none;
   outline: none;
@@ -135,27 +135,28 @@
 .opc-left {
   flex: 1.2;
   margin-right: 20px;
-  border: 1px solid #797979;
 }
 
 .gruop-title {
-  height: 34px;
-  line-height: 34px;
-  padding: 0 5px;
-  border-bottom: 1px solid #797979;
-  background: #1D89ED;
-  color: #000;
+  height: 37px;
+  line-height: 37px;
+  padding: 0 16px;
+  background: #91C2F4;
+  color: #316BA6;
 }
 
 .gruop-list {
   height: calc(100% - 34px);
   overflow: auto;
   user-select: none;
+  background: #F5F7FC;
 }
 
 .gruop-list .list-item {
+  height: 37px;
+  line-height: 37px;
   cursor: pointer;
-  padding: 5px 13px;
+  padding: 0px 20px 0 30px;
 }
 
 .gruop-list .list-item:hover{
@@ -168,8 +169,6 @@
 
 .opc-right {
   flex: 2;
-  /* overflow: auto; */
-  border: 1px solid #797979;
 }
 
 /* opc 弹窗 - table */
@@ -183,7 +182,7 @@
 }
 .opc-table table tbody {
   display: block;
-  height: 312px;
+  height: 318px;
   overflow-y: scroll;
 }
 .opc-table tbody tr {
@@ -215,8 +214,8 @@
   text-align: center;
 }
 .opc-table table th {
-  background: #A5CCF2;
-  color: #fff;
+  background: #91C2F4;
+  color: #316BA6;
 }
 .opc-table table tr {
   cursor: pointer;
@@ -239,7 +238,7 @@
   background-color: #F5F7FC;
 }
 .opc-table table tr:hover {
-  background-color: #F2F8FD;
+  background-color: #E4EEFF;
 }
 
 
