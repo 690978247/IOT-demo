@@ -186,7 +186,7 @@
 .opc-table table tbody {
   display: block;
   height: 424px;
-  overflow-y: scroll;
+  overflow-y: auto;
 }
 .opc-table tbody tr {
   display: table;
@@ -200,6 +200,10 @@
   width: 100%;
   table-layout: fixed;
 }
+.opc-table .opc-table__header {
+  background: #91C2F4
+}
+
 .opc-table table td, .opc-table table th {
   min-width: 0;
   box-sizing: border-box;
@@ -232,6 +236,7 @@
 .opc-table table td {
   padding: 8px 0;
   box-sizing: border-box;
+  border-right: 1px solid #DCE4EB;
 }
 /* .opc-table table td:hover div{
   overflow: auto;
@@ -310,10 +315,17 @@
   border-radius: 4px;
   user-select: none;
 }
-.popup-cancel:hover {
+
+.popup-cancel {
   color: #409eff;
-  border-color: #c6e2ff;
-  background-color: #ecf5ff;
+  background: #ecf5ff;
+  border-color: #b3d8ff;
+}
+
+.popup-cancel:hover {
+  background: #409eff;
+  border-color: #409eff;
+  color: #fff;
 }
 .popup-isplain {
   color: #409eff ;
