@@ -124,7 +124,7 @@
 /* opc 弹窗中间样式 */
 #opc-body-wrap, .opc-wrap{
   width: 100%;
-  height: 360px;
+  height: 460px;
   padding: 0;
 }
 
@@ -134,12 +134,14 @@
 
 .opc-left {
   flex: 1.2;
+  height: 100%;
   margin-right: 20px;
 }
 
 .gruop-title {
   height: 37px;
   line-height: 37px;
+  font-size: 15px;
   padding: 0 16px;
   background: #91C2F4;
   color: #316BA6;
@@ -168,13 +170,14 @@
 }
 
 .opc-right {
+  height: 100%;
   flex: 2;
 }
 
 /* opc 弹窗 - table */
 .opc-table {
   border: 1px solid #ebeef5;
-  overflow: auto;
+  height: 100%;
   position: relative;
 }
 .opc-table table{
@@ -182,7 +185,7 @@
 }
 .opc-table table tbody {
   display: block;
-  height: 318px;
+  height: 424px;
   overflow-y: scroll;
 }
 .opc-table tbody tr {
@@ -198,7 +201,6 @@
   table-layout: fixed;
 }
 .opc-table table td, .opc-table table th {
-  padding: 12px 0;
   min-width: 0;
   box-sizing: border-box;
   overflow: hidden;
@@ -214,8 +216,12 @@
   text-align: center;
 }
 .opc-table table th {
+  height: 36px;
+  line-height: 36px;
   background: #91C2F4;
   color: #316BA6;
+  font-size: 15px;
+  font-weight: normal;
 }
 .opc-table table tr {
   cursor: pointer;
@@ -281,7 +287,7 @@
 /* 底部样式 */
 .popup-footer {
   display: flex;
-  justify-content: center;
+  justify-content: flex-end;
   padding: 10px 20px 20px;
   box-sizing: border-box;
 }
