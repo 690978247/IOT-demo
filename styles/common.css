@@ -150,6 +150,7 @@
 .gruop-list {
   height: calc(100% - 34px);
   overflow: auto;
+  user-select: none;
 }
 
 .gruop-list .list-item {
@@ -158,6 +159,10 @@
 }
 
 .gruop-list .list-item:hover{
+  background: #C2F3FF;
+}
+
+.active {
   background: #C2F3FF;
 }
 
@@ -212,6 +217,9 @@
 .opc-table table th {
   background: #A5CCF2;
   color: #fff;
+}
+.opc-table table tr {
+  cursor: pointer;
 }
 .opc-table table tr:last-child td{
   border-bottom: none;

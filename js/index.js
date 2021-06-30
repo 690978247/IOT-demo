@@ -2431,18 +2431,25 @@ wrap.innerHTML = html
 
 // OPC DA协议、PC UA协议 弹窗渲染函数
 function renderOPCHTML(items = [], data = {}, type) {
-  renderOPCGroup(['组1','组2','组3','组4','组5','组6'])
+  renderOPCGroup(['组1','组2','组3','组4','组5','组6'], '组1')
   renderOPCTable([{name: 'Tag_1', dataType: '二进制变量'},{name: 'Tag_2', dataType: '有符号8位整型'},{name: 'Tag_3', dataType: '文本变量8位字符集'},{name: 'Tag_4', dataType: '字符串'}])
 }
 
 // 渲染OPC协议左侧组列表
-function renderOPCGroup(gruopList = []) {
+function renderOPCGroup(gruopList = [], choice = '') {
   let group = document.getElementById('group-list')
   let html = ``
   gruopList.forEach(item => {
-    html += `
-      <div class="list-item">${item}</div>
-    `.trim()
+    if (item === choice) {
+      html += `
+        <div class="list-item active">${item}</div>
+      `.trim()
+    } else {
+      html += `
+        <div class="list-item">${item}</div>
+      `.trim()
+    }
+    
   })
   group.innerHTML = html
 }
@@ -2461,6 +2468,27 @@ function renderOPCTable(tableData = []) {
   })
 
   table.innerHTML = html  
+}
+
+// 选择组
+function choiceGroup (event) {
+  let currentItem = event.target
+  if (currentItem.id === 'group-list') {
+    return 
+  }
+  let items = [...document.getElementsByClassName('list-item')]
+  if (currentItem.className.includes('active')) {
+    return
+  } else {
+    items.forEach(item => {
+      if (item === currentItem) {
+        currentItem.classList.add('active')
+      } else {
+        item.classList.remove('active')
+      }
+    })
+  }
+
 }
 
 // 选择下拉内容 -- S7_TCP协议
