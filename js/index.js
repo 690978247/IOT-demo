@@ -2482,6 +2482,7 @@ function renderOPCTable(tableData = [], choice = '') {
 
 // 选择组
 function choiceGroup (event) {
+  /* 样式部分 */
   let currentItem = event.target
   if (currentItem.id === 'group-list') {
     return 
@@ -2498,11 +2499,13 @@ function choiceGroup (event) {
       }
     })
   }
+  /* 变量部分 */
 
 }
 
 // 选择表格行
 function choiceRow (event) {
+  /* 样式部分 */
   let currentRow = event.currentTarget
   let items = [...document.getElementsByClassName('tbody-row')]
   if (currentRow.className.includes('active')) {
@@ -2516,6 +2519,7 @@ function choiceRow (event) {
       }
     })
   }
+  /* 变量部分 */
 }
 
 // 选择下拉内容 -- S7_TCP协议
