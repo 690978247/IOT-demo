@@ -202,8 +202,16 @@
   white-space: nowrap;
   vertical-align: middle;
   position: relative;
-  text-align: left;
+  text-align: center;
   /* border-bottom: 1px solid #ebeef5; */
+}
+.opc-table .table-num{
+  width: 50px;
+  text-align: center;
+}
+.opc-table table th {
+  background: #A5CCF2;
+  color: #fff;
 }
 .opc-table table tr:last-child td{
   border-bottom: none;
