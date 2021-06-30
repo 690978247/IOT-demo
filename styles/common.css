@@ -166,7 +166,7 @@
 }
 
 .active {
-  background: #E4EEFF;
+  background: #E4EEFF !important;
 }
 
 .opc-right {
