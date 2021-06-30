@@ -121,6 +121,23 @@
   padding: 20px;
 }
 
+/* opc 弹窗中间样式 */
+.opc-wrap{
+  width: 100%;
+  height: 100%;
+  min-height: 320px;
+  padding: 0;
+  display: flex;
+}
+
+.opc-left {
+  border: 1px solid red;
+}
+
+.opc-right {
+  border: 1px solid blue;
+}
+
 /* .PBW-block {
   display: flex;
   justify-content: space-between;
