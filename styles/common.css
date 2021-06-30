@@ -135,15 +135,97 @@
 .opc-left {
   flex: 1.2;
   margin-right: 20px;
-  overflow: auto;
   border: 1px solid #797979;
+}
+
+.gruop-title {
+  height: 34px;
+  line-height: 34px;
+  padding: 0 5px;
+  border-bottom: 1px solid #797979;
+  background: #1D89ED;
+  color: #000;
+}
+
+.gruop-list {
+  height: calc(100% - 34px);
+  overflow: auto;
+}
+
+.gruop-list .list-item {
+  cursor: pointer;
+  padding: 5px 13px;
+}
+
+.gruop-list .list-item:hover{
+  background: #C2F3FF;
 }
 
 .opc-right {
   flex: 2;
-  overflow: auto;
+  /* overflow: auto; */
   border: 1px solid #797979;
 }
+
+/* opc 弹窗 - table */
+.opc-table {
+  border: 1px solid #ebeef5;
+  overflow: auto;
+  position: relative;
+}
+.opc-table table{
+  width: 100%;
+}
+.opc-table table tbody {
+  display: block;
+  height: 310px;
+  overflow-y: scroll;
+}
+.opc-table tbody tr {
+  display: table;
+  width: 100%;
+  table-layout: fixed;
+  }
+.opc-table table thead {
+  color: #909399;
+  display: table;
+  font-weight: 500;
+  width: 100%;
+  table-layout: fixed;
+}
+.opc-table table td, .opc-table table th {
+  padding: 12px 0;
+  min-width: 0;
+  box-sizing: border-box;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  vertical-align: middle;
+  position: relative;
+  text-align: left;
+  /* border-bottom: 1px solid #ebeef5; */
+}
+.opc-table table tr:last-child td{
+  border-bottom: none;
+}
+.opc-table table td {
+  padding: 8px 0;
+  box-sizing: border-box;
+}
+/* .opc-table table td:hover div{
+  overflow: auto;
+} */
+.opc-table table td div, .opc-table table th div{
+  box-sizing: border-box;
+  padding: 0 10px;
+}
+.opc-table table tr:nth-child(even) {
+  background-color: #F5F7FC;
+}
+.opc-table table tr:hover {
+  background-color: #F2F8FD;
+}
+
 
 /* .PBW-block {
   display: flex;
@@ -232,6 +314,7 @@
   border-color: #66b1ff;
   color: #fff;
 }
+
 
 input::-webkit-outer-spin-button,
 input::-webkit-inner-spin-button {
