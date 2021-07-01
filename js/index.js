@@ -8,6 +8,7 @@ var popupData = {
   dataType: '二进制变量',
   dataValue: '',  // 变量地址
   dataLen: '4',  // 字符长度
+  opcGroup: '',  // opc 协议组列表
 }
 
 // 定义一个提交的数据结构， 用来填写默认值与回显
@@ -1558,7 +1559,7 @@ function openPop() {
 
     renderFins_TCPHTML(formData.showList, formData, popupData.dataType)
   } else if (popupData.protocolName === 'OPC_DA' || popupData.protocolName === 'OPC_UA') {
-    renderOPCHTML(formData.showList, formData, popupData.dataType)
+    renderOPCHTML(popupData.opcGroup, popupData.dataValue)
   }
 
 }
@@ -1918,6 +1919,8 @@ function confirmPop () {
         popupData.dataValue = `E18_${addressData.address}.${addressData.bit}`
       }
     }
+  } else if (popupData.protocolName === 'OPC_DA' || popupData.protocolName === 'OPC_UA') {
+    popupData.dataValue = formData.addressValue
   }
   
   console.log(popupData)
@@ -2430,9 +2433,11 @@ wrap.innerHTML = html
 }
 
 // OPC DA协议、PC UA协议 弹窗渲染函数
-function renderOPCHTML(items = [], data = {}, type) {
-  renderOPCGroup(['组1','组2','组3','组4','组5','组6'], '组1')
-  renderOPCTable([{name: 'Tag_1', dataType: '二进制变量'},{name: 'Tag_2', dataType: '有符号8位整型'},{name: 'Tag_3', dataType: '文本变量8位字符集'},{name: 'Tag_4', dataType: '字符串'}], '二进制变量')
+function renderOPCHTML(opcGroup, addressValue) {
+  let currentGroup = opcGroup ? opcGroup : '组1'
+  let currentValue = addressValue ? addressValue : '二进制变量'
+  renderOPCGroup(['组1','组2','组3','组4','组5','组6'], currentGroup)
+  renderOPCTable([{name: 'Tag_1', dataType: '二进制变量'},{name: 'Tag_2', dataType: '有符号8位整型'},{name: 'Tag_3', dataType: '文本变量8位字符集'},{name: 'Tag_4', dataType: '字符串'}], currentValue)
 }
 
 // 渲染OPC协议左侧组列表
@@ -2458,9 +2463,9 @@ function renderOPCTable(tableData = [], choice = '') {
   let table = document.getElementById('opc-tbody')
   let html = ``
   tableData.forEach((item,index) => {
-    if (item.dataType === choice) {
+    if (item.name === choice) {
       html += `
-        <tr class="tbody-row active" onclick="choiceRow(event)"  >
+        <tr class="tbody-row active" onclick="choiceRow(event, '${item.name}')"  >
           <td class="table-num">${index + 1}</td>
           <td>${item.name}</td>
           <td>${item.dataType}</td>
@@ -2468,7 +2473,7 @@ function renderOPCTable(tableData = [], choice = '') {
       .trim()
     } else {
     html += `
-      <tr class="tbody-row" onclick="choiceRow(event)">
+      <tr class="tbody-row" onclick="choiceRow(event, '${item.name}')">
         <td class="table-num">${index + 1}</td>
         <td>${item.name}</td>
         <td>${item.dataType}</td>
@@ -2500,11 +2505,12 @@ function choiceGroup (event) {
     })
   }
   /* 变量部分 */
+  popupData.opcGroup = event.target.innerText
 
 }
 
 // 选择表格行
-function choiceRow (event) {
+function choiceRow (event, data) {
   /* 样式部分 */
   let currentRow = event.currentTarget
   let items = [...document.getElementsByClassName('tbody-row')]
@@ -2520,6 +2526,7 @@ function choiceRow (event) {
     })
   }
   /* 变量部分 */
+  formData.addressValue = data
 }
 
 // 选择下拉内容 -- S7_TCP协议
